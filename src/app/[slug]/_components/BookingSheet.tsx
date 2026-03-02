@@ -280,7 +280,9 @@ export function BookingSheet({ service, barbers }: BookingSheetProps) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button size="sm">Agendar</Button>
+        <button className="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all">
+          Book Now
+        </button>
       </DrawerTrigger>
       <DrawerContent className="h-[90vh] ">
         <DrawerHeader>
