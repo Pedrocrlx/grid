@@ -42,13 +42,13 @@ export function Navbar() {
               Pricing
             </Link>
             <Link
-              href="#"
+              href="/auth/login"
               className="text-sm font-bold text-slate-900 px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-all"
             >
               Login
             </Link>
             <Link
-              href="#"
+              href="/auth/signup"
               className="text-sm font-bold text-white bg-blue-600 px-5 py-2.5 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all transform active:scale-95"
             >
               Start Free Trial
@@ -124,14 +124,14 @@ export function Navbar() {
             Pricing
           </Link>
           <Link
-            href="#"
+            href="/auth/login"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-4 py-2 text-sm font-bold text-slate-900 border border-slate-200 rounded-lg hover:bg-slate-50 transition-all text-center"
           >
             Login
           </Link>
           <Link
-            href="#"
+            href="/auth/signup"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all text-center"
           >

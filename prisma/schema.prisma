@@ -14,16 +14,64 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique
+  supabaseId    String          @unique // Link to Supabase Auth
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  
+  // Relations
+  barberShop    BarberShop?
+  subscription  Subscription?
+}
+
+model Subscription {
+  id                    String    @id @default(cuid())
+  userId                String    @unique
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  stripeCustomerId      String    @unique
+  stripeSubscriptionId  String    @unique
+  stripePriceId         String
+  
+  plan                  String    // "basic", "pro", "enterprise"
+  status                String    // "trialing", "active", "canceled", "past_due"
+  
+  trialEndsAt           DateTime?
+  currentPeriodStart    DateTime
+  currentPeriodEnd      DateTime
+  cancelAtPeriodEnd     Boolean   @default(false)
+  
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
 model BarberShop {
   id          String    @id @default(cuid())
+  
+  // Link to User (owner)
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
   slug        String    @unique // Ex: "Pedro BarberShop"
   name        String
   description String?
   logoUrl     String?
+  
+  // Theme customization (for Pro+ plans)
+  primaryColor    String?
+  secondaryColor  String?
+  
+  // Configuration
   config      Json? // save config for styles: { primary: "#000", font: "Roboto" }
+  
+  isActive    Boolean   @default(true)
+  
   services    Service[]
   barbers     Barber[]
   bookings    Booking[] // Back-relation for bookings
+  
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }

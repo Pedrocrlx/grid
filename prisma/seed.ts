@@ -3,15 +3,24 @@ import { prisma } from "../src/lib/prisma";
 async function main() {
   console.log("Starting database seed...");
 
-  // Create barbershop "Estilo & Classe"
+  // Create a test user
+  const user = await prisma.user.create({
+    data: {
+      email: "demo@grid.com",
+      supabaseId: "demo-user-123", // In production, this comes from Supabase
+    },
+  });
+
+  console.log("User created:", user.email);
+
+  // Create barbershop "Estilo & Classe" linked to the user
   const shop = await prisma.barberShop.create({
     data: {
+      userId: user.id,
       slug: "EstiloClasse",
       name: "Estilo & Classe Barbearia",
       description:
         "Tradição e modernidade em um só lugar. Oferecemos serviços premium com profissionais experientes para você sair sempre impecável.",
-      createdAt: new Date(),
-      updatedAt: new Date(),
       services: {
         create: [
           { name: "Corte Clássico", price: 20, duration: 30 },

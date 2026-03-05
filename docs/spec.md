@@ -131,7 +131,7 @@ Grid is a multi-tenant SaaS platform that enables barbershops to create professi
 
 **Note:** After completing the public booking page, we've identified the need to implement the complete SaaS flow before continuing with theming. See [SaaS Architecture Document](./saas-architecture.md) for full details.
 
-### **Chunk 3: Landing Page & Marketing** (NEXT)
+### **Chunk 3: Landing Page & Marketing** (COMPLETED ✅)
 * **Homepage** (`/`)
   * Hero section with value proposition
   * Features showcase
@@ -149,7 +149,7 @@ Grid is a multi-tenant SaaS platform that enables barbershops to create professi
   * Privacy Policy
   * Contact page
 
-### **Chunk 4: Authentication & Subscription** (CRITICAL)
+### **Chunk 4: Authentication & Subscription** (IN PROGRESS 🔄)
 * **Supabase Auth Integration**
   * Sign up flow with email verification
   * Login/Logout functionality
