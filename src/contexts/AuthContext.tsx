@@ -6,6 +6,14 @@ import type { AuthContextType, AuthUser, SignUpData, SignInData } from "@/types/
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function getAuthRedirectUrl(path: string) {
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}${path}`;
+  }
+
+  return `${process.env.NEXT_PUBLIC_APP_URL ?? ""}${path}`;
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -101,7 +109,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password`,
+        redirectTo: getAuthRedirectUrl("/auth/reset-password"),
       });
 
       return { error };
@@ -117,7 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+          redirectTo: getAuthRedirectUrl("/auth/callback"),
         },
       });
       return { error: error as Error | null };

@@ -7,6 +7,10 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get("code");
   const redirectTo = searchParams.get("redirectTo") ?? "/dashboard";
 
+  console.log("[OAuth Callback] URL:", request.url);
+  console.log("[OAuth Callback] Code:", code ? "present" : "missing");
+  console.log("[OAuth Callback] RedirectTo:", redirectTo);
+
   if (code) {
     // Create a response first so we can set cookies on it
     const response = NextResponse.redirect(`${origin}${redirectTo}`);
@@ -30,13 +34,23 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { error, data } = await supabase.auth.exchangeCodeForSession(code);
+
+    console.log("[OAuth Callback] Exchange result:", { error: error?.message, hasSession: !!data.session });
 
     if (!error) {
+      console.log("[OAuth Callback] Success! Redirecting to:", redirectTo);
       return response;
+    } else {
+      console.log("[OAuth Callback] Error:", error.message);
     }
+  } else {
+    console.log("[OAuth Callback] No code in URL");
   }
 
   // Return to login with error if code exchange failed
-  return NextResponse.redirect(`${origin}/auth/login?error=oauth_callback_error`);
+  const errorRedirect = `${origin}/auth/login?error=oauth_callback_error`;
+  console.log("[OAuth Callback] Final error redirect:", errorRedirect);
+  return NextResponse.redirect(errorRedirect);
 }
+

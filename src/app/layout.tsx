@@ -11,8 +11,11 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Grid — Your schedule, organized.",
+  title: "Grid | Your schedule, organized.",
   description: "Grid helps barbershops manage bookings with precision. Create your professional booking page in minutes and stop the scheduling chaos.",
+  icons: {
+    icon: { url: "/favicon.webp", type: "image/webp" },
+  },
 };
 
 export default function RootLayout({

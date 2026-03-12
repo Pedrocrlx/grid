@@ -6,6 +6,14 @@ interface AuthResponse<T> {
   error: Error | null;
 }
 
+function getAuthRedirectUrl(path: string) {
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}${path}`;
+  }
+
+  return `${process.env.NEXT_PUBLIC_APP_URL ?? ""}${path}`;
+}
+
 class AuthService {
   /**
    * Sign up a new user with email and password
@@ -109,7 +117,7 @@ class AuthService {
   async resetPassword(email: string): Promise<{ error: Error | null }> {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password`,
+        redirectTo: getAuthRedirectUrl("/auth/reset-password"),
       });
 
       if (error) {
@@ -172,7 +180,7 @@ class AuthService {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+          redirectTo: getAuthRedirectUrl("/auth/callback"),
         },
       });
 

@@ -13,7 +13,7 @@ const AUTH_ROUTES = [
   // NOTE: /auth/callback is intentionally excluded - it must run freely for OAuth PKCE flow
 ];
 
-export default async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip middleware entirely for the OAuth callback route
