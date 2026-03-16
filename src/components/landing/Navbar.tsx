@@ -2,54 +2,56 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 border-b border-slate-100 bg-white/80 backdrop-blur-md">
+    <nav className="fixed top-0 w-full z-50 border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2">
             <div className="grid grid-cols-2 gap-0.5 w-6 h-6">
-              <div className="bg-slate-200 rounded-sm"></div>
-              <div className="bg-slate-200 rounded-sm"></div>
+              <div className="bg-slate-200 dark:bg-white rounded-sm"></div>
+              <div className="bg-slate-200 dark:bg-white rounded-sm"></div>
               <div className="highlight-square rounded-sm"></div>
-              <div className="bg-slate-200 rounded-sm"></div>
+              <div className="bg-slate-200 dark:bg-white rounded-sm"></div>
             </div>
-            <span className="text-xl font-extrabold text-slate-900 tracking-tight">
+            <span className="text-xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight">
               Grid
             </span>
           </div>
 
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             <Link
               href="#features"
-              className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
+              className="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               Features
             </Link>
             <Link
               href="#how-it-works"
-              className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
+              className="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               How it Works
             </Link>
             <Link
               href="#pricing"
-              className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
+              className="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               Pricing
             </Link>
+            <ThemeToggle />
             <Link
               href="/auth/login"
-              className="text-sm font-bold text-slate-900 px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-all"
+              className="text-sm font-bold text-slate-900 dark:text-slate-50 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-all"
             >
               Login
             </Link>
             <Link
               href="/auth/signup"
-              className="text-sm font-bold text-white bg-blue-600 px-5 py-2.5 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all transform active:scale-95"
+              className="text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-500 px-5 py-2.5 rounded-lg shadow-lg shadow-blue-500/20 transition-all transform active:scale-95"
             >
               Start Free Trial
             </Link>
@@ -58,7 +60,7 @@ export function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-slate-600 hover:text-slate-900 transition-colors"
+              className="p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -101,39 +103,39 @@ export function Navbar() {
           mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-4 pt-2 pb-4 space-y-3 bg-white border-t border-slate-100">
+        <div className="px-4 pt-2 pb-4 space-y-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
           <Link
             href="#features"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-all"
+            className="block px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-all"
           >
             Features
           </Link>
           <Link
             href="#how-it-works"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-all"
+            className="block px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-all"
           >
             How it Works
           </Link>
           <Link
             href="#pricing"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-all"
+            className="block px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-all"
           >
             Pricing
           </Link>
           <Link
             href="/auth/login"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2 text-sm font-bold text-slate-900 border border-slate-200 rounded-lg hover:bg-slate-50 transition-all text-center"
+            className="block px-4 py-2 text-sm font-bold text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-center"
           >
             Login
           </Link>
           <Link
             href="/auth/signup"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all text-center"
+            className="block px-4 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-500 rounded-lg shadow-lg shadow-blue-500/20 transition-all text-center"
           >
             Start Free Trial
           </Link>

@@ -99,24 +99,24 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 dark:from-slate-900 to-slate-100 dark:to-slate-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg dark:shadow-xl dark:shadow-black/20 p-8">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
               <div className="grid grid-cols-2 gap-0.5 w-6 h-6">
-                <div className="bg-slate-200 rounded-sm"></div>
-                <div className="bg-slate-200 rounded-sm"></div>
+                <div className="bg-slate-200 dark:bg-slate-700 rounded-sm"></div>
+                <div className="bg-slate-200 dark:bg-slate-700 rounded-sm"></div>
                 <div className="bg-blue-600 rounded-sm"></div>
-                <div className="bg-slate-200 rounded-sm"></div>
+                <div className="bg-slate-200 dark:bg-slate-700 rounded-sm"></div>
               </div>
-              <span className="text-xl font-extrabold text-slate-900">Grid</span>
+              <span className="text-xl font-extrabold text-slate-900 dark:text-slate-50">Grid</span>
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
               Create Your Account
             </h1>
-            <p className="text-slate-600 text-sm">
+            <p className="text-slate-600 dark:text-slate-400 text-sm">
               Join thousands of barbershops managing bookings with precision
             </p>
           </div>
@@ -125,7 +125,7 @@ export default function SignUpPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name Field */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-slate-900 mb-1">
+              <label htmlFor="name" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
                 Full Name
               </label>
               <input
@@ -135,18 +135,18 @@ export default function SignUpPage() {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="João Silva"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all ${
-                  errors.name ? "border-red-500" : "border-slate-200"
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder:text-slate-500 dark:placeholder:text-slate-400 ${
+                  errors.name ? "border-red-500 dark:border-red-600" : "border-slate-200 dark:border-slate-700"
                 }`}
               />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.name}</p>
               )}
             </div>
 
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-900 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
                 Email Address
               </label>
               <input
@@ -156,18 +156,18 @@ export default function SignUpPage() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="joao@example.com"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all ${
-                  errors.email ? "border-red-500" : "border-slate-200"
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder:text-slate-500 dark:placeholder:text-slate-400 ${
+                  errors.email ? "border-red-500 dark:border-red-600" : "border-slate-200 dark:border-slate-700"
                 }`}
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.email}</p>
               )}
             </div>
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-900 mb-1">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
                 Password
               </label>
               <input
@@ -177,18 +177,18 @@ export default function SignUpPage() {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all ${
-                  errors.password ? "border-red-500" : "border-slate-200"
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder:text-slate-500 dark:placeholder:text-slate-400 ${
+                  errors.password ? "border-red-500 dark:border-red-600" : "border-slate-200 dark:border-slate-700"
                 }`}
               />
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.password}</p>
               )}
             </div>
 
             {/* Confirm Password Field */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-900 mb-1">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
                 Confirm Password
               </label>
               <input
@@ -198,12 +198,12 @@ export default function SignUpPage() {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all ${
-                  errors.confirmPassword ? "border-red-500" : "border-slate-200"
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder:text-slate-500 dark:placeholder:text-slate-400 ${
+                  errors.confirmPassword ? "border-red-500 dark:border-red-600" : "border-slate-200 dark:border-slate-700"
                 }`}
               />
               {errors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+                <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.confirmPassword}</p>
               )}
             </div>
 
@@ -211,7 +211,7 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all disabled:bg-slate-400 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20"
+              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-500 text-white rounded-lg font-semibold transition-all disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20 dark:shadow-blue-600/10"
             >
               {isLoading ? "Creating Account..." : "Create Account"}
             </button>
@@ -219,9 +219,9 @@ export default function SignUpPage() {
 
           {/* Divider */}
           <div className="flex items-center my-5">
-            <div className="flex-1 border-t border-slate-200"></div>
-            <span className="px-3 text-sm text-slate-400">or</span>
-            <div className="flex-1 border-t border-slate-200"></div>
+            <div className="flex-1 border-t border-slate-200 dark:border-slate-700"></div>
+            <span className="px-3 text-sm text-slate-400 dark:text-slate-500">or</span>
+            <div className="flex-1 border-t border-slate-200 dark:border-slate-700"></div>
           </div>
 
           {/* Google Button */}
@@ -229,10 +229,10 @@ export default function SignUpPage() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={googleLoading || isLoading}
-            className="w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-slate-200 rounded-lg font-semibold text-slate-700 hover:bg-slate-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-slate-200 dark:border-slate-700 rounded-lg font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {googleLoading ? (
-              <svg className="w-5 h-5 animate-spin text-slate-400" viewBox="0 0 24 24" fill="none">
+              <svg className="w-5 h-5 animate-spin text-slate-400 dark:text-slate-500" viewBox="0 0 24 24" fill="none">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
               </svg>
@@ -248,21 +248,21 @@ export default function SignUpPage() {
           </button>
 
           {/* Terms Agreement */}
-          <p className="text-xs text-slate-500 text-center mt-4">
+          <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-4">
             By creating an account, you agree to our{" "}
-            <Link href="/terms" className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link href="/terms" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="/privacy" className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link href="/privacy" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
               Privacy Policy
             </Link>
           </p>
 
           {/* Sign In Link */}
-          <p className="text-center mt-6 text-slate-600 text-sm">
+          <p className="text-center mt-6 text-slate-600 dark:text-slate-400 text-sm">
             Already have an account?{" "}
-            <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link href="/auth/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
               Sign In
             </Link>
           </p>
@@ -270,7 +270,7 @@ export default function SignUpPage() {
 
         {/* Back to home */}
         <div className="text-center mt-4">
-          <Link href="/" className="text-slate-600 hover:text-slate-900 text-sm font-medium">
+          <Link href="/" className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-sm font-medium">
             ← Back to Home
           </Link>
         </div>

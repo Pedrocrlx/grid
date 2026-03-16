@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Chunk 4] - Authentication & Subscription (Ongoing)
+## [0.5.1] - 16/03/26 🔄
+### Added
+- **Dark Theme Implementation** 
+  - Installed `next-themes@0.46` for theme management
+  - Created `src/contexts/ThemeProvider.tsx` - Next-themes provider wrapper with class-based strategy
+  - Created `src/components/ThemeToggle.tsx` - Theme toggle button with Sun/Moon icons
+  - Applied comprehensive dark mode (`dark:` classes) to all pages:
+    - Landing page (Hero, Features, Stats, HowItWorks, Pricing, FinalCTA, Footer, Navbar)
+    - Auth pages (login, signup, forgot-password, verify-email)
+    - Dashboard placeholder
+  - Added theme toggle button to navigation bars (landing and dashboard)
+  - Configured Tailwind with custom dark variant: `@custom-variant dark (&:is(.dark *))`
+
+- **Dark Theme CSS Updates** (`src/app/globals.css`)
+  - Added CSS rules for theme styling using `html.dark body` selector
+  - Added `color-scheme` property for browser-level theme support
+  - Prevents hydration mismatch by moving styles from Tailwind classes to CSS
+
+- **Hydration Error Fixes**
+  - Added `suppressHydrationWarning` to `<html>` element in root layout
+  - Removed dark mode Tailwind classes from body element
+  - Set `disableTransitionOnChange` in ThemeProvider to prevent visual glitches
+  - Removed dynamic date computation from Footer component
+  - Added `"use client"` directives to all landing components
+  - Fixed ThemeToggle component rendering to avoid early returns
+
+- **Icon Fixes**
+  - Updated ThemeToggle SVG icons to use `stroke` instead of problematic `fill` paths
+  - Implemented proper Sun icon (center circle + 8 rays) with `strokeWidth="2"`
+  - Implemented proper Moon icon (crescent) with `strokeWidth="2"`
+  - Both icons now properly respect `currentColor` for theme-aware styling
+
+### Updated Components
+- **Landing Components:** Features, HowItWorks, Pricing now have complete dark mode support
+- **Navbar:** Updated spacing (`space-x-8` → `space-x-6`) to accommodate theme toggle
+- **Theme Provider:** Enhanced configuration with proper mounting detection
+
+### Technical Details
+- Theme storage: localStorage with `storageKey="theme"`
+- Default theme: "light"
+- Attribute strategy: class-based (`className="dark"` on html element)
+- Build validation: All builds pass without errors
+
+### Notes
+- Hydration errors resolved by separating server-side rendering from client-side theme application
+- Theme persistence works correctly across page reloads
+- All UI components properly styled in both light and dark modes
+- Theme toggle button fully functional in all navigations
+
 ## [Chunk 4] - Authentication & Subscription
 ## [0.5.0] - 11/03/26 ✅
 ### Added

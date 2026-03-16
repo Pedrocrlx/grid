@@ -2,7 +2,7 @@ import { FinalCTA, Pricing, HowItWorks, Features, Stats, Hero, Navbar, Footer } 
 
 export default function LandingPage() {
   return (
-    <div className="bg-white text-slate-700">
+    <div className="bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-300">
       <Navbar />
       <Hero />
       <Stats />

@@ -1,26 +1,28 @@
+"use client";
+
 export function Hero() {
   return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-      <div className="absolute inset-0 grid-bg pointer-events-none"></div>
+    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white dark:bg-slate-950">
+      <div className="absolute inset-0 grid-bg pointer-events-none opacity-50 dark:opacity-10"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6">
+          <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 dark:text-slate-50 leading-[1.1] mb-6">
             Your Barbershop Schedule, <br />
-            <span className="text-blue-600">Perfectly Organized</span>
+            <span className="text-blue-600 dark:text-blue-400">Perfectly Organized</span>
           </h1>
-          <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
             Grid helps barbershops manage bookings with precision. Create your
             professional booking page in minutes and stop the scheduling chaos.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white rounded-xl font-bold text-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10">
+            <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-xl font-bold text-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-all shadow-xl shadow-slate-900/10 dark:shadow-slate-100/10">
               Start 14-Day Free Trial
             </button>
-            <button className="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all">
+            <button className="w-full sm:w-auto px-8 py-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-800 rounded-xl font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
               View Demo Shop
             </button>
           </div>
-          <div className="mt-8 flex items-center justify-center gap-2 text-sm text-slate-500 font-medium">
+          <div className="mt-8 flex items-center justify-center gap-2 text-sm text-slate-500 dark:text-slate-400 font-medium">
             <svg
               className="w-5 h-5 text-green-500"
               fill="currentColor"
@@ -37,30 +39,30 @@ export function Hero() {
         </div>
 
         <div className="mt-20 relative max-w-5xl mx-auto animate-float">
-          <div className="rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden p-2">
-            <div className="rounded-xl border border-slate-100 bg-slate-50 h-[400px] flex items-center justify-center relative overflow-hidden">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden p-2">
+            <div className="rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 h-[400px] flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 grid grid-cols-6 grid-rows-4 opacity-10">
                 {Array.from({ length: 24 }).map((_, i) => (
-                  <div key={i} className="border border-slate-400"></div>
+                  <div key={i} className="border border-slate-400 dark:border-slate-600"></div>
                 ))}
               </div>
-              <div className="z-10 bg-white p-6 rounded-xl shadow-lg border border-slate-100 max-w-md">
+              <div className="z-10 bg-white dark:bg-slate-900 p-6 rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 max-w-md">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-bold text-slate-900 uppercase tracking-tighter text-sm">
+                  <h3 className="font-bold text-slate-900 dark:text-slate-50 uppercase tracking-tighter text-sm">
                     Booking Preview
                   </h3>
-                  <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-bold">
+                  <span className="bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400 px-2 py-0.5 rounded text-[10px] font-bold">
                     LIVE
                   </span>
                 </div>
                 <div className="space-y-3">
-                  <div className="h-10 bg-slate-50 rounded-lg border border-slate-100 flex items-center px-4 justify-between">
-                    <span className="text-xs font-semibold">10:00 — 10:30</span>
-                    <span className="text-[10px] bg-blue-100 text-blue-600 px-2 py-0.5 rounded font-bold">
+                  <div className="h-10 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700 flex items-center px-4 justify-between">
+                    <span className="text-xs font-semibold text-slate-900 dark:text-slate-50">10:00 — 10:30</span>
+                    <span className="text-[10px] bg-blue-100 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded font-bold">
                       AVAIL
                     </span>
                   </div>
-                  <div className="h-10 bg-blue-600 rounded-lg flex items-center px-4 justify-between text-white shadow-lg shadow-blue-500/20">
+                  <div className="h-10 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center px-4 justify-between text-white shadow-lg shadow-blue-500/20">
                     <span className="text-xs font-bold italic">
                       10:30 — 11:00
                     </span>
@@ -68,9 +70,9 @@ export function Hero() {
                       SELECTED
                     </span>
                   </div>
-                  <div className="h-10 bg-slate-50 rounded-lg border border-slate-100 flex items-center px-4 justify-between">
-                    <span className="text-xs font-semibold">11:00 — 11:30</span>
-                    <span className="text-[10px] bg-blue-100 text-blue-600 px-2 py-0.5 rounded font-bold">
+                  <div className="h-10 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700 flex items-center px-4 justify-between">
+                    <span className="text-xs font-semibold text-slate-900 dark:text-slate-50">11:00 — 11:30</span>
+                    <span className="text-[10px] bg-blue-100 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded font-bold">
                       AVAIL
                     </span>
                   </div>

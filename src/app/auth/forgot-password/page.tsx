@@ -38,13 +38,13 @@ export default function ForgotPasswordPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 dark:from-slate-900 to-slate-100 dark:to-slate-950 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
-          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg dark:shadow-xl dark:shadow-black/20 p-8 text-center">
             <div className="mb-6 flex justify-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-950/30 rounded-full flex items-center justify-center">
                 <svg
-                  className="w-8 h-8 text-green-600"
+                  className="w-8 h-8 text-green-600 dark:text-green-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -59,22 +59,22 @@ export default function ForgotPasswordPage() {
               </div>
             </div>
 
-            <h1 className="text-2xl font-bold text-slate-900 mb-2">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
               Check Your Email
             </h1>
-            <p className="text-slate-600 mb-6">
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
               We've sent a password reset link to <span className="font-semibold">{email}</span>. Click the link to reset your password.
             </p>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-blue-900">
+            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-lg p-4 mb-6">
+              <p className="text-sm text-blue-900 dark:text-blue-200">
                 The link will expire in 24 hours for security reasons.
               </p>
             </div>
 
             <Link
               href="/auth/login"
-              className="inline-block w-full py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all"
+              className="inline-block w-full py-2.5 bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-500 text-white rounded-lg font-semibold transition-all"
             >
               Back to Sign In
             </Link>
@@ -85,19 +85,19 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 dark:from-slate-900 to-slate-100 dark:to-slate-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg dark:shadow-xl dark:shadow-black/20 p-8">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
             Reset Password
           </h1>
-          <p className="text-slate-600 text-sm mb-6">
+          <p className="text-slate-600 dark:text-slate-400 text-sm mb-6">
             Enter your email address and we'll send you a link to reset your password
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-900 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
                 Email Address
               </label>
               <input
@@ -106,33 +106,33 @@ export default function ForgotPasswordPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="joao@example.com"
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all ${
-                  error ? "border-red-500" : "border-slate-200"
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder:text-slate-500 dark:placeholder:text-slate-400 ${
+                  error ? "border-red-500 dark:border-red-600" : "border-slate-200 dark:border-slate-700"
                 }`}
               />
               {error && (
-                <p className="text-red-500 text-sm mt-1">{error}</p>
+                <p className="text-red-500 dark:text-red-400 text-sm mt-1">{error}</p>
               )}
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all disabled:bg-slate-400 disabled:cursor-not-allowed"
+              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-500 text-white rounded-lg font-semibold transition-all disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed"
             >
               {isLoading ? "Sending..." : "Send Reset Link"}
             </button>
           </form>
 
-          <p className="text-center mt-6 text-slate-600 text-sm">
+          <p className="text-center mt-6 text-slate-600 dark:text-slate-400 text-sm">
             Remember your password?{" "}
-            <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link href="/auth/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
               Sign In
             </Link>
           </p>
 
           <div className="text-center mt-4">
-            <Link href="/" className="text-slate-600 hover:text-slate-900 text-sm font-medium">
+            <Link href="/" className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-sm font-medium">
               ← Back to Home
             </Link>
           </div>

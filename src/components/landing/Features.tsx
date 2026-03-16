@@ -1,3 +1,5 @@
+"use client";
+
 export function Features() {
   const features = [
     {
@@ -55,13 +57,13 @@ export function Features() {
   ];
 
   return (
-    <section id="features" className="py-24 bg-white relative">
+    <section id="features" className="py-24 bg-white relative dark:bg-slate-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
-          <h2 className="text-sm font-bold text-blue-600 uppercase tracking-[0.2em] mb-3">
+          <h2 className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mb-3">
             Core Engine
           </h2>
-          <p className="text-3xl md:text-4xl font-extrabold text-slate-900">
+          <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-slate-50">
             Engineered for Precision Scheduling
           </p>
         </div>
@@ -69,11 +71,11 @@ export function Features() {
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="group p-8 border border-slate-100 rounded-3xl hover:border-blue-200 hover:shadow-2xl hover:shadow-blue-500/5 transition-all bg-slate-50/50"
+              className="group p-8 border border-slate-100 dark:border-slate-800 rounded-3xl hover:border-blue-200 dark:hover:border-blue-700 hover:shadow-2xl hover:shadow-blue-500/5 transition-all bg-slate-50/50 dark:bg-slate-900/50"
             >
-              <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-slate-100 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-slate-100 dark:border-slate-700 group-hover:scale-110 transition-transform">
                 <svg
-                  className="w-6 h-6 text-blue-600"
+                  className="w-6 h-6 text-blue-600 dark:text-blue-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -81,10 +83,10 @@ export function Features() {
                   {feature.icon}
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-3">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-3">
                 {feature.title}
               </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                 {feature.description}
               </p>
             </div>

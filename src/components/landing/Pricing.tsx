@@ -1,3 +1,5 @@
+"use client";
+
 export function Pricing() {
   const plans = [
     {
@@ -39,17 +41,17 @@ export function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="py-24 bg-white relative">
-      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
+    <section id="pricing" className="py-24 bg-white dark:bg-slate-950 relative">
+      <div className="absolute inset-0 grid-bg opacity-30 dark:opacity-5 pointer-events-none"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold text-blue-600 uppercase tracking-[0.2em] mb-3">
+          <h2 className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mb-3">
             Pricing
           </h2>
-          <p className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+          <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-slate-50 mb-4">
             Choose Your Grid Plan
           </p>
-          <p className="text-slate-500 font-medium">
+          <p className="text-slate-500 dark:text-slate-400 font-medium">
             Try any plan free for 14 days
           </p>
         </div>
@@ -57,28 +59,28 @@ export function Pricing() {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`p-10 rounded-3xl bg-white transition-all ${
+              className={`p-10 rounded-3xl bg-white dark:bg-slate-900 transition-all ${
                 plan.highlighted
-                  ? "border-2 border-blue-600 shadow-2xl shadow-blue-500/10 transform scale-105 z-10 relative"
-                  : "border border-slate-100 hover:border-blue-200"
+                  ? "border-2 border-blue-600 dark:border-blue-500 shadow-2xl shadow-blue-500/10 dark:shadow-blue-500/20 transform scale-105 z-10 relative"
+                  : "border border-slate-100 dark:border-slate-800 hover:border-blue-200 dark:hover:border-blue-700"
               }`}
             >
               {plan.highlighted && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 dark:bg-blue-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
                   Most Popular
                 </div>
               )}
               <div className="mb-8">
-                <h4 className="text-slate-900 font-bold mb-1">{plan.name}</h4>
-                <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">
+                <h4 className="text-slate-900 dark:text-slate-50 font-bold mb-1">{plan.name}</h4>
+                <p className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">
                   {plan.subtitle}
                 </p>
               </div>
-              <div className="text-4xl font-extrabold text-slate-900 mb-8 tracking-tighter">
+              <div className="text-4xl font-extrabold text-slate-900 dark:text-slate-50 mb-8 tracking-tighter">
                 {plan.price.includes("Coming") || plan.price.includes("Contact") ? (
                   <>
                     {plan.price.split(" ")[0]}{" "}
-                    <span className="text-slate-300">
+                    <span className="text-slate-300 dark:text-slate-500">
                       {plan.price.split(" ")[1]}
                     </span>
                   </>
@@ -90,10 +92,10 @@ export function Pricing() {
                 {plan.features.map((feature) => (
                   <li
                     key={feature}
-                    className="flex items-center gap-3 text-sm text-slate-600"
+                    className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400"
                   >
                     <svg
-                      className="w-5 h-5 text-blue-500"
+                      className="w-5 h-5 text-blue-500 dark:text-blue-400"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -110,8 +112,8 @@ export function Pricing() {
               <button
                 className={`w-full py-${plan.highlighted ? "4" : "3"} font-bold rounded-xl transition-all ${
                   plan.highlighted
-                    ? "bg-blue-600 text-white hover:bg-blue-700 shadow-xl shadow-blue-600/20"
-                    : "bg-slate-50 text-slate-900 border border-slate-200 hover:bg-slate-100"
+                    ? "bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 shadow-xl shadow-blue-600/20 dark:shadow-blue-500/20"
+                    : "bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700"
                 }`}
               >
                 {plan.cta}

@@ -155,10 +155,11 @@ Grid is a multi-tenant SaaS platform that enables barbershops to create professi
   * Login/Logout functionality ✅
   * Password reset ✅
   * Protected route middleware (`src/middleware.ts`) ✅
-* **Stripe Integration**
-  * Installed and configured (`src/lib/stripe.ts`) ✅
-  * Checkout session creation (Chunk 5 prerequisite)
-  * Webhook handling (deferred to post-onboarding)
+* **Stripe Integration** (🔄 IN PROGRESS)
+  * Installed and configured (`src/lib/stripe.ts`) 
+  * Checkout session creation (Next)
+  * Webhook handling (Next)
+  * Payment processing (Next)
 * **Database Updates**
   * `User` model (linked to Supabase) ✅
   * `Subscription` model (Stripe data) ✅
@@ -169,6 +170,13 @@ Grid is a multi-tenant SaaS platform that enables barbershops to create professi
   * `userService.ts` - User CRUD operations ✅
   * `useProtectedRoute` / `usePublicRoute` hooks ✅
   * Dashboard placeholder (`/dashboard`) ✅
+* **Dark Theme Implementation** (COMPLETED ✅)
+  * `next-themes@0.46` installed and configured ✅
+  * `ThemeProvider.tsx` context component ✅
+  * `ThemeToggle.tsx` component with proper icons ✅
+  * Dark mode (`dark:` classes) applied to all pages ✅
+  * Theme toggle buttons in navigation ✅
+  * Hydration error fixes with CSS-based theming ✅
 
 ### **Chunk 5: Onboarding Wizard** (CRITICAL)
 * **Multi-Step Form** (`/onboarding`)
