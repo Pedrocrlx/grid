@@ -19,10 +19,12 @@ bunx prisma migrate reset
 O seed atual cria a barbershop **"Estilo & Classe Barbearia"** com:
 
 - **Slug:** `EstiloClasse`
+- **Contacto:** phone e address opcionais (adicionados via onboarding ou dashboard)
+- **Instagram:** configurável na dashboard após onboarding
 - **3 Barbeiros:**
-  - Carlos (Especialista em Cortes Clássicos)
-  - Miguel (Mestre em Barbas e Bigodes)
-  - André (Expert em Cortes Modernos)
+  - Carlos (Especialista em Cortes Clássicos, phone: +351910000001)
+  - Miguel (Mestre em Barbas e Bigodes, phone: +351910000002)
+  - André (Expert em Cortes Modernos, phone: +351910000003)
 - **4 Serviços:**
   - Corte Clássico (€20, 30min)
   - Barba Completa (€15, 25min)

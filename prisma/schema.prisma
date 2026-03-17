@@ -58,7 +58,12 @@ model BarberShop {
   name        String
   description String?
   logoUrl     String?
-  
+
+  // Contact & social
+  phone       String?   // WhatsApp / phone number
+  address     String?
+  instagram   String?   // Optional, added post-onboarding in dashboard
+
   // Theme customization (for Pro+ plans)
   primaryColor    String?
   secondaryColor  String?
@@ -81,6 +86,10 @@ model Barber {
   name        String
   imageUrl    String?
   description String?
+
+  // Contact & social
+  phone       String?  // WhatsApp / phone number (required during onboarding)
+  instagram   String?  // Optional
 
   // Tenant Isolation
   barberShopId String
