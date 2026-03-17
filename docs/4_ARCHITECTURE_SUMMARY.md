@@ -342,25 +342,32 @@ Active Subscription
 
 ## Implementation Checklist
 
-### Completed (Chunks 0-2)
+### Completed (Chunks 0-4)
 - [x] Next.js + Bun setup
 - [x] PostgreSQL + Prisma
 - [x] Public booking page
-- [x] International phone validation
-- [x] Smart calendar
-- [x] Test coverage (42 tests)
+- [x] International phone validation (PT, BR, GB, DE, FR)
+- [x] Smart calendar with availability filtering
+- [x] Landing page (Hero, Features, How It Works, Stats)
+- [x] Pricing page (plan comparison, 14-day trial badge, FAQ)
+- [x] Legal pages (Terms, Privacy, Contact)
+- [x] Supabase Auth (signup, login, logout, email verification, password reset)
+- [x] Protected route middleware
+- [x] AuthContext + useAuth hook
+- [x] User model + UserService (linked to Supabase)
+- [x] Subscription model (Stripe schema ready)
+- [x] Dark theme (next-themes, ThemeProvider, ThemeToggle)
+- [x] Test coverage (99 tests, 11 suites)
 
-### In Progress (Chunk 3)
-- [ ] Landing page
-- [ ] Pricing page
-- [ ] Legal pages
+### Pending (Chunk 4 — Stripe)
+- [ ] Checkout session creation
+- [ ] Webhook handling (checkout.session.completed, subscription events)
+- [ ] Payment processing
 
-### Upcoming (Chunks 4-8)
-- [ ] Supabase Auth integration
-- [ ] Stripe integration
-- [ ] Onboarding wizard
-- [ ] Admin dashboard
-- [ ] Theme customization (optional)
+### Upcoming (Chunks 5-8)
+- [ ] Onboarding wizard (slug validation, barbers, services, preview)
+- [ ] Admin dashboard (CRUD, billing, settings)
+- [ ] Theme customization — Redux themeSlice (optional)
 - [ ] Deployment & CI/CD
 
 ## Success Metrics
@@ -381,15 +388,16 @@ Active Subscription
 
 ## Documentation Index
 
-1. **[spec.md](./spec.md)** - Main specification
-2. **[saas-architecture.md](./saas-architecture.md)** - Detailed architecture
-3. **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - Quick reference guide
-4. **[CODING_GUIDELINE.md](./CODING_GUIDELINE.md)** - Development standards
-5. **[ARCHITECTURE_SUMMARY.md](./ARCHITECTURE_SUMMARY.md)** - This document
+1. **[1_QUICK_REFERENCE.md](./1_QUICK_REFERENCE.md)** - Quick reference guide
+2. **[2_spec.md](./2_spec.md)** - Main specification
+3. **[3_saas-architecture.md](./3_saas-architecture.md)** - Detailed architecture
+4. **[4_ARCHITECTURE_SUMMARY.md](./4_ARCHITECTURE_SUMMARY.md)** - This document
+5. **[5_TEST_COVERAGE.md](./5_TEST_COVERAGE.md)** - Test coverage overview
+6. **[6_CODING_GUIDELINE.md](./6_CODING_GUIDELINE.md)** - Development standards
 
 ---
 
-**Last Updated:** 2026-02-27  
-**Version:** 0.3.0  
-**Status:** Chunk 2 Complete, Chunk 3 Next  
+**Last Updated:** 2026-03-17
+**Version:** 0.4.0
+**Status:** Chunks 0–4 Complete (Stripe pending), Chunk 5 Next
 **Brand:** Grid - Your schedule, organized

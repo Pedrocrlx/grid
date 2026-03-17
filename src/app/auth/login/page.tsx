@@ -69,7 +69,7 @@ export default function LoginPage() {
     if (user) {
       toast.success("Welcome back!");
       // Redirect to dashboard
-      router.push("/dashboard");
+      router.push("/onboarding");
     }
   };
 

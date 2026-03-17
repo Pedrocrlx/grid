@@ -39,11 +39,16 @@ Public Page Live (/{slug})
 - Shop Name (required)
 - Slug (unique, auto-generated from name, editable)
 - Description (optional)
+- Phone / WhatsApp (optional)
+- Address / Location (optional)
+- Logo upload (optional, Supabase Storage)
 - Slug validation (check uniqueness in real-time)
 
 **Step 2: Add Barbers**
 - Name (required)
-- Description/Specialty (optional)
+- Specialty (optional)
+- Phone / WhatsApp (required)
+- Instagram handle (optional)
 - Photo upload (optional, Supabase Storage)
 - Minimum: 1 barber required
 - Maximum: 10 barbers per shop

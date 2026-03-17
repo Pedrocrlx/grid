@@ -2,24 +2,35 @@
 
 ## Documentation Structure
 
-- **[spec.md](./spec.md)** - Main project specification with tech stack and chunk breakdown
-- **[saas-architecture.md](./saas-architecture.md)** - Detailed SaaS architecture, user flows, and technical details
-- **[CODING_GUIDELINE.md](./CODING_GUIDELINE.md)** - Development standards and best practices
+- **[1_QUICK_REFERENCE.md](./1_QUICK_REFERENCE.md)** - This file — start here
+- **[2_spec.md](./2_spec.md)** - Main project specification with tech stack and chunk breakdown
+- **[3_saas-architecture.md](./3_saas-architecture.md)** - Detailed SaaS architecture, user flows, and technical details
+- **[4_ARCHITECTURE_SUMMARY.md](./4_ARCHITECTURE_SUMMARY.md)** - Visual diagrams, schema, security model
+- **[5_TEST_COVERAGE.md](./5_TEST_COVERAGE.md)** - Test coverage overview
+- **[6_CODING_GUIDELINE.md](./6_CODING_GUIDELINE.md)** - Development standards and best practices
 
 ## Current Status
 
-### Completed (Chunks 0-2)
+### Completed (Chunks 0-4)
 - Next.js + Bun setup
 - PostgreSQL + Prisma ORM
 - Public booking page with SSR
 - International phone validation (5 countries)
-- Smart calendar with availability
-- Comprehensive test coverage (42 tests)
+- Smart calendar with availability filtering
+- Landing page, Pricing page, Legal pages
+- Supabase Auth (signup, login, logout, email verification, password reset)
+- Protected route middleware + AuthContext
+- User model + Subscription model (Stripe schema ready)
+- Dark theme (next-themes)
+- Test coverage (99 tests, 11 suites)
 
-### Next Steps (Chunk 3)
-- Landing page with hero section
-- Pricing page with plan comparison
-- Legal pages (Terms, Privacy)
+### Pending (Chunk 4 — Stripe)
+- Checkout session creation
+- Webhook handling
+- Payment processing
+
+### Next (Chunk 5)
+- Onboarding wizard (slug validation, barbers, services, preview)
 
 ## Architecture Overview
 
@@ -27,7 +38,7 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                         Grid SaaS                           │
 ├─────────────────────────────────────────────────────────────┤
-│                                                             │
+│                                                             │ 
 │  Landing Page (/)                                           │
 │       ↓                                                     │
 │  Sign Up + Email Verification                               │
@@ -283,8 +294,9 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ## Roadmap
 
 ### MVP (Current Focus)
-- [ ] Landing page
-- [ ] Auth + Subscription
+- [x] Landing page
+- [x] Auth (Supabase — signup, login, logout, email verification, password reset)
+- [ ] Subscription (Stripe — checkout, webhooks, billing)
 - [ ] Onboarding wizard
 - [ ] Admin dashboard
 - [ ] Billing management

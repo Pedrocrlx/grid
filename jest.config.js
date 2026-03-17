@@ -1,16 +1,14 @@
 import nextJest from 'next/jest.js'
 
 const createJestConfig = nextJest({
-  // Caminho para a tua app Next.js
+  // Path to next.js app
   dir: './',
 })
 
-// Configurações personalizadas do Jest
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
-    // Alias para imports (se usares @/components/...)
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 }

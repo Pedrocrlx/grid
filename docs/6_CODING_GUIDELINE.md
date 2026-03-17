@@ -18,7 +18,7 @@
 ## 3. Testing (Jest)
 * **Requirement:** Every complex utility function or critical component *must* have a corresponding `.test.tsx` or `.spec.ts` file.
 * **Mocking:** Mock external dependencies (Prisma, Axios) to isolate unit tests.
-* **Naming:** Test files must be co-located with the source file or in a `__tests__` directory.
+* **Naming:** Test files must be co-located with the source file.
 
 ## 4. TypeScript Rules
 * **No `any`:** Strictly forbidden. Define Interfaces for all API responses coming via Axios.

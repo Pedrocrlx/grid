@@ -8,7 +8,6 @@
  */
 
 import { validateInternationalPhone, COUNTRY_CONFIGS } from "@/lib/utils/phone-validation";
-import { describe, it, expect, beforeEach } from "bun:test";
 
 describe("BookingSheet Integration Tests", () => {
 
@@ -81,8 +80,8 @@ describe("BookingSheet Integration Tests", () => {
       expect(expectedParams.barberId).toBe("barber-1");
       expect(expectedParams.serviceDuration).toBe(30);
       
-      // Verify date range is 30 days
-      const daysDiff = Math.floor((expectedParams.endDate.getTime() - expectedParams.startDate.getTime()) / (1000 * 60 * 60 * 24));
+      // Verify date range is approximately 30 days (allow ±1 for DST)
+      const daysDiff = Math.round((expectedParams.endDate.getTime() - expectedParams.startDate.getTime()) / (1000 * 60 * 60 * 24));
       expect(daysDiff).toBe(30);
     });
 
