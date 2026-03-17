@@ -178,28 +178,32 @@ Grid is a multi-tenant SaaS platform that enables barbershops to create professi
   * Theme toggle buttons in navigation ✅
   * Hydration error fixes with CSS-based theming ✅
 
-### **Chunk 5: Onboarding Wizard** (CRITICAL)
+### **Chunk 5: Onboarding Wizard** (COMPLETED ✅)
 * **Multi-Step Form** (`/onboarding`)
-  * Step 1: Create BarberShop (name, slug, description)
+  * Step 1: Create BarberShop (name, slug, description, phone, address)
     * Real-time slug validation (uniqueness check)
-    * Slug auto-generation from name
+    * Slug auto-generation from name (accent removal)
     * Reserved slug prevention
   * Step 2: Add Barbers (1-10 required)
-    * Name, description, photo upload
+    * Name, specialty, phone (required), instagram (optional), photo upload UI
     * Minimum 1 barber validation
   * Step 3: Add Services (1-20 required)
     * Name, price, duration
     * Minimum 1 service validation
   * Step 4: Preview & Launch
-    * Preview public page
-    * Confirm and activate
+    * Review summary
+    * Confirm and activate (calls `POST /api/onboarding/complete`)
 * **State Management**
-  * React Context or Redux for wizard state
+  * Local `useState` for wizard state (no Redux/Context needed)
   * Form validation at each step
-  * Progress indicator
+  * Progress indicator with stepper
 * **API Endpoints**
   * `GET /api/onboarding/check-slug` - Slug availability
-  * `POST /api/onboarding/complete` - Atomic creation (transaction)
+  * `POST /api/onboarding/complete` - Atomic creation (transaction), JWT auth via Bearer token
+* **Schema Updates**
+  * `BarberShop`: added `phone`, `address` fields
+  * `Barber`: added `phone` (required during onboarding), `instagram` (optional) fields
+  * Migration: `20260317214640_add_contact_social_fields`
 
 ### **Chunk 6: Admin Dashboard** (MANAGEMENT)
 * **Dashboard Layout** (`/dashboard`)

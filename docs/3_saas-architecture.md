@@ -134,6 +134,11 @@ model BarberShop {
   name        String
   description String?
   
+  // Contact & social
+  phone       String?   // WhatsApp / phone number
+  address     String?
+  instagram   String?   // Optional, added post-onboarding in dashboard
+
   // Theme customization (for Pro+ plans)
   primaryColor    String?
   secondaryColor  String?
@@ -146,6 +151,23 @@ model BarberShop {
   services    Service[]
   barbers     Barber[]
   bookings    Booking[]
+}
+
+model Barber {
+  id          String   @id @default(uuid())
+  barberShopId String
+  barberShop  BarberShop @relation(fields: [barberShopId], references: [id])
+  
+  name        String
+  description String?
+  imageUrl    String?
+  
+  // Contact & social
+  phone       String?   // Required during onboarding
+  instagram   String?   // Optional
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 ```
 
@@ -263,25 +285,12 @@ POST /api/stripe/webhook
 ### 7.1 State Management
 
 ```typescript
-// Onboarding Context (React Context or Redux)
-interface OnboardingState {
-  step: 1 | 2 | 3 | 4;
-  barberShop: {
-    name: string;
-    slug: string;
-    description: string;
-  };
-  barbers: Array<{
-    name: string;
-    description: string;
-    photoUrl?: string;
-  }>;
-  services: Array<{
-    name: string;
-    price: number;
-    duration: number;
-  }>;
-}
+// Onboarding uses local useState — no Redux/Context needed
+// All wizard state lives in the page component
+const [currentStep, setCurrentStep] = useState(1);
+const [shopData, setShopData] = useState({ name: "", slug: "", description: "", phone: "", address: "" });
+const [barbers, setBarbers] = useState<BarberInput[]>([{ name: "", specialty: "", phone: "", instagram: "" }]);
+const [services, setServices] = useState<ServiceInput[]>([{ name: "", price: "", duration: "30" }]);
 ```
 
 ### 7.2 Validation Rules
@@ -504,10 +513,10 @@ const RESERVED_SLUGS = [
 ### Critical Path (MVP):
 
 1. ✅ Public booking page (DONE - Chunk 2)
-2. 🔄 Landing page + Pricing page
-3. 🔄 Supabase Auth integration
+2. ✅ Landing page + Pricing page (DONE - Chunk 3)
+3. ✅ Supabase Auth integration (DONE - Chunk 4)
 4. 🔄 Stripe integration (checkout + webhooks)
-5. 🔄 Onboarding wizard
+5. ✅ Onboarding wizard (DONE - Chunk 5)
 6. 🔄 Admin dashboard (basic CRUD)
 7. 🔄 Subscription management
 

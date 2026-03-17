@@ -11,7 +11,7 @@
 
 ## Current Status
 
-### Completed (Chunks 0-4)
+### Completed (Chunks 0-5)
 - Next.js + Bun setup
 - PostgreSQL + Prisma ORM
 - Public booking page with SSR
@@ -23,14 +23,16 @@
 - User model + Subscription model (Stripe schema ready)
 - Dark theme (next-themes)
 - Test coverage (99 tests, 11 suites)
+- Onboarding wizard (4-step: shop, team, services, launch)
+- Schema: phone/address added to BarberShop, phone/instagram added to Barber
 
 ### Pending (Chunk 4 — Stripe)
 - Checkout session creation
 - Webhook handling
 - Payment processing
 
-### Next (Chunk 5)
-- Onboarding wizard (slug validation, barbers, services, preview)
+### Next (Chunk 6)
+- Admin dashboard (CRUD for barbers/services, bookings view, settings, billing)
 
 ## Architecture Overview
 
@@ -219,7 +221,7 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ### Barbers
 - Minimum: 1 required
 - Maximum: 10 per shop
-- Fields: name (required), description (optional), photo (optional)
+- Fields: name (required), specialty/description (optional), phone (required), instagram (optional), photo (optional)
 
 ### Services
 - Minimum: 1 required
@@ -297,7 +299,7 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 - [x] Landing page
 - [x] Auth (Supabase — signup, login, logout, email verification, password reset)
 - [ ] Subscription (Stripe — checkout, webhooks, billing)
-- [ ] Onboarding wizard
+- [x] Onboarding wizard
 - [ ] Admin dashboard
 - [ ] Billing management
 

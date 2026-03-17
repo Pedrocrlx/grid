@@ -69,12 +69,16 @@ Grid is a multi-tenant SaaS platform where barbershop owners can create professi
 │                                                                     │
 │  Step 1: Create BarberShop                                          │
 │  ├─ Shop Name (required)                                            │
-│  ├─ Slug (unique, auto-generated)                                   │
-│  └─ Description (optional)                                          │
+│  ├─ Slug (unique, auto-generated, accent removal)                   │
+│  ├─ Description (optional)                                          │
+│  ├─ Phone / WhatsApp (optional)                                     │
+│  └─ Address (optional)                                              │
 │                                                                     │
 │  Step 2: Add Barbers (1-10)                                         │
 │  ├─ Name (required)                                                 │
-│  ├─ Description (optional)                                          │
+│  ├─ Specialty/Description (optional)                                │
+│  ├─ Phone / WhatsApp (required)                                     │
+│  ├─ Instagram (optional)                                            │
 │  └─ Photo Upload (Supabase Storage)                                 │
 │                                                                     │
 │  Step 3: Add Services (1-20)                                        │
@@ -155,6 +159,9 @@ BarberShop
 ├─ slug (unique)
 ├─ name
 ├─ description
+├─ phone (optional)
+├─ address (optional)
+├─ instagram (optional, dashboard-only)
 ├─ primaryColor (optional)
 ├─ secondaryColor (optional)
 ├─ logoUrl (optional)
@@ -165,7 +172,9 @@ Barber
 ├─ barberShopId (FK → BarberShop)
 ├─ name
 ├─ description
-├─ photoUrl
+├─ phone (optional, required during onboarding)
+├─ instagram (optional)
+├─ imageUrl
 └─ timestamps
 
 Service
@@ -342,7 +351,7 @@ Active Subscription
 
 ## Implementation Checklist
 
-### Completed (Chunks 0-4)
+### Completed (Chunks 0-5)
 - [x] Next.js + Bun setup
 - [x] PostgreSQL + Prisma
 - [x] Public booking page
@@ -358,14 +367,15 @@ Active Subscription
 - [x] Subscription model (Stripe schema ready)
 - [x] Dark theme (next-themes, ThemeProvider, ThemeToggle)
 - [x] Test coverage (99 tests, 11 suites)
+- [x] Onboarding wizard (4-step: shop, team, services, launch)
+- [x] Schema: phone/address on BarberShop, phone/instagram on Barber
 
 ### Pending (Chunk 4 — Stripe)
 - [ ] Checkout session creation
 - [ ] Webhook handling (checkout.session.completed, subscription events)
 - [ ] Payment processing
 
-### Upcoming (Chunks 5-8)
-- [ ] Onboarding wizard (slug validation, barbers, services, preview)
+### Upcoming (Chunks 6-8)
 - [ ] Admin dashboard (CRUD, billing, settings)
 - [ ] Theme customization — Redux themeSlice (optional)
 - [ ] Deployment & CI/CD
@@ -398,6 +408,6 @@ Active Subscription
 ---
 
 **Last Updated:** 2026-03-17
-**Version:** 0.4.0
-**Status:** Chunks 0–4 Complete (Stripe pending), Chunk 5 Next
+**Version:** 0.5.0
+**Status:** Chunks 0–5 Complete (Stripe pending), Chunk 6 Next
 **Brand:** Grid - Your schedule, organized
