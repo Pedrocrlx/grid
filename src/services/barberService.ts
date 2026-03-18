@@ -20,7 +20,10 @@ export interface BarberShopData {
   id: string;
   slug: string;
   name: string;
+  address: string;
+  instagram?: string | null;
   description?: string | null;
+  phone?: string | null;
   services: Service[];
   barbers: Barber[];
   duration: number;  

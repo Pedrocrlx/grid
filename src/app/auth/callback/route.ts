@@ -5,11 +5,7 @@ import type { NextRequest } from "next/server";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const redirectTo = searchParams.get("redirectTo") ?? "/dashboard";
-
-  console.log("[OAuth Callback] URL:", request.url);
-  console.log("[OAuth Callback] Code:", code ? "present" : "missing");
-  console.log("[OAuth Callback] RedirectTo:", redirectTo);
+  const redirectTo = searchParams.get("redirectTo") ?? "/onboarding";
 
   if (code) {
     // Create a response first so we can set cookies on it

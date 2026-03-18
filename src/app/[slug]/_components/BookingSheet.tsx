@@ -286,10 +286,10 @@ export function BookingSheet({ service, barbers }: BookingSheetProps) {
       </DrawerTrigger>
       <DrawerContent className="h-[90vh]">
         <DrawerHeader className="border-b border-slate-100">
-          <DrawerTitle className="text-2xl font-extrabold text-slate-900">
+          <DrawerTitle className="text-2xl font-extrabold text-slate-900 dark:text-slate-50">
             Book {service.name}
           </DrawerTitle>
-          <p className="text-sm text-slate-600 mt-1">
+          <p className="text-sm text-slate-600 mt-1 dark:text-slate-50">
             {Intl.NumberFormat("pt-PT", {
               style: "currency",
               currency: "EUR",
@@ -300,7 +300,7 @@ export function BookingSheet({ service, barbers }: BookingSheetProps) {
         <div className="p-6 space-y-6 overflow-y-auto">
           {/* Name Input */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider dark:text-slate-50">
               Your Name
             </label>
             <input
@@ -313,7 +313,7 @@ export function BookingSheet({ service, barbers }: BookingSheetProps) {
 
           {/* Country Select */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider dark:text-slate-50">
               Country
             </label>
             <Select value={selectedCountry} onValueChange={setSelectedCountry}>
@@ -332,11 +332,11 @@ export function BookingSheet({ service, barbers }: BookingSheetProps) {
 
           {/* Phone Input */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider dark:text-slate-50">
               Phone Number
             </label>
             <div className="flex items-center gap-3">
-              <span className="px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-700 font-bold text-sm">
+              <span className="px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-700 font-bold text-sm dark:text-slate-50 dark:bg-slate-600/50">
                 {COUNTRY_CONFIGS[selectedCountry].dialCode}
               </span>
               <input
@@ -351,7 +351,7 @@ export function BookingSheet({ service, barbers }: BookingSheetProps) {
 
           {/* Barber Select */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider dark:text-slate-50">
               Choose Your Barber
             </label>
             <Select onValueChange={setSelectedBarber}>
@@ -370,7 +370,7 @@ export function BookingSheet({ service, barbers }: BookingSheetProps) {
 
           {/* Calendar */}
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+            <label className="text-sm font-bold text-slate-900 uppercase tracking-wider ">
               Select Date
             </label>
             <div className="flex flex-col items-center p-4 border border-slate-200 rounded-xl bg-slate-50/50">

@@ -92,7 +92,7 @@ describe("generateMetadata", () => {
 
     const metadata = await generateMetadata({ params: Promise.resolve({ slug: "test-barber-shop" }) });
 
-    expect(metadata.title).toBe("Test Barber Shop | Grid");
+    expect(metadata.title).toBe("Test Barber Shop");
     expect(metadata.description).toBe("A great shop");
   });
 
