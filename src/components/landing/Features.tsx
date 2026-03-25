@@ -21,9 +21,9 @@ export function Features() {
   ];
 
   return (
-    <section id="features" className="py-24 bg-white relative dark:bg-slate-950">
+    <section id="features" className="py-16 bg-white relative dark:bg-slate-950 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-20">
+        <div className="text-center mb-10 lg:mb-20">
           <h2 className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mb-3">
             Core Engine
           </h2>

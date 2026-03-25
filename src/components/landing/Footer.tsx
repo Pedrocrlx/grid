@@ -8,7 +8,7 @@ export function Footer() {
   const { t } = useI18n();
 
   return (
-    <footer className="bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 pt-20 pb-10">
+    <footer className="bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800 pt-7 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-12 mb-16">
           <div className="col-span-2">

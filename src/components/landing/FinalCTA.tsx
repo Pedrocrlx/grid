@@ -6,7 +6,7 @@ export function FinalCTA() {
   const { t } = useI18n();
 
   return (
-    <section className="py-24 bg-white dark:bg-slate-900 relative overflow-hidden">
+    <section className="py-16 bg-white dark:bg-slate-900 relative overflow-hidden lg:py-24">
       <div className="absolute inset-0 grid-bg opacity-10 dark:opacity-5 pointer-events-none"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">

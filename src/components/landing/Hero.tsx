@@ -11,11 +11,11 @@ export function Hero() {
       <div className="absolute inset-0 grid-bg pointer-events-none opacity-50 dark:opacity-10"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 dark:text-slate-50 leading-[1.1] mb-6">
+          <h1 className="text-4xl lg:text-7xl font-extrabold text-slate-900 dark:text-slate-50 leading-[1.1] mb-6">
             {t.hero.headline} <br />
             <span className="text-blue-600 dark:text-blue-400">{t.hero.headlineAccent}</span>
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
             {t.hero.subheadline}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

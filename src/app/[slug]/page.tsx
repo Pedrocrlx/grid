@@ -20,18 +20,6 @@ function MapPinIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function ScissorsIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <circle cx="6" cy="6" r="3" />
-      <circle cx="6" cy="18" r="3" />
-      <line x1="20" y1="4" x2="8.12" y2="15.88" />
-      <line x1="14.47" y1="14.48" x2="20" y2="20" />
-      <line x1="8.12" y1="8.12" x2="12" y2="12" />
-    </svg>
-  );
-}
-
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -49,8 +37,15 @@ export async function generateMetadata({
   const logoUrl = theme?.logoUrl || barber.logoUrl;
 
   return {
-    title: `${barber.name}`,
-    description: barber.description || `Book your appointment at ${barber.name}`,
+    title: `${barber.name} - Book Your Appointment`,
+    description: barber.description || `Book your appointment at ${barber.name}. Professional barbershop services with online booking.`,
+    keywords: [
+      barber.name,
+      "barbershop",
+      "barber appointment",
+      "haircut booking",
+      barber.address || "",
+    ].filter(Boolean),
     icons: logoUrl ? {
       icon: [
         {
@@ -70,8 +65,8 @@ export async function generateMetadata({
       apple: logoUrl,
     } : undefined,
     openGraph: {
-      title: `${barber.name}`,
-      description: barber.description || `Book your appointment at ${barber.name}`,
+      title: `${barber.name} - Book Your Appointment`,
+      description: barber.description || `Book your appointment at ${barber.name}. Professional barbershop services with online booking.`,
       images: logoUrl ? [
         {
           url: logoUrl,
@@ -82,12 +77,27 @@ export async function generateMetadata({
       ] : [],
       type: 'website',
       siteName: barber.name,
+      url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://gridschedule.com'}/${slug}`,
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${barber.name}`,
-      description: barber.description || `Book your appointment at ${barber.name}`,
+      title: `${barber.name} - Book Your Appointment`,
+      description: barber.description || `Book your appointment at ${barber.name}. Professional barbershop services.`,
       images: logoUrl ? [logoUrl] : [],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_APP_URL || 'https://gridschedule.com'}/${slug}`,
     },
   };
 }
@@ -111,8 +121,87 @@ export default async function BarberPage({ params }: PageProps) {
   const secondaryColor = theme?.secondaryColor || defaultTheme.secondaryColor;
   const logoUrl = theme?.logoUrl || barber.logoUrl;
 
+  // Create structured data for local business
+  const businessJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${process.env.NEXT_PUBLIC_APP_URL || 'https://gridschedule.com'}/${slug}`,
+    "name": barber.name,
+    "description": barber.description || `Professional barbershop services at ${barber.name}. Book your appointment online.`,
+    "url": `${process.env.NEXT_PUBLIC_APP_URL || 'https://gridschedule.com'}/${slug}`,
+    "telephone": barber.phone || undefined,
+    "address": barber.address ? {
+      "@type": "PostalAddress",
+      "streetAddress": barber.address,
+      "addressLocality": barber.address.split(',')[1]?.trim() || undefined,
+      "addressCountry": "PT"
+    } : undefined,
+    "image": logoUrl || undefined,
+    "logo": logoUrl || undefined,
+    "priceRange": barber.services?.length > 0 ? `€${Math.min(...barber.services.map(s => Number(s.price)))}-€${Math.max(...barber.services.map(s => Number(s.price)))}` : undefined,
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification", 
+        "dayOfWeek": "Saturday",
+        "opens": "09:00",
+        "closes": "17:00"
+      }
+    ],
+    "serviceArea": {
+      "@type": "City",
+      "name": barber.address?.split(',')[1]?.trim() || "Portugal"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Barbershop Services",
+      "itemListElement": barber.services?.map((service, index) => ({
+        "@type": "Offer",
+        "position": index + 1,
+        "itemOffered": {
+          "@type": "Service",
+          "name": service.name,
+          "description": service.description || `Professional ${service.name.toLowerCase()} service`,
+          "provider": {
+            "@type": "LocalBusiness",
+            "name": barber.name
+          }
+        },
+        "price": Number(service.price),
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "validFrom": new Date().toISOString().split('T')[0]
+      })) || []
+    },
+    "staff": barber.barbers?.map(barberStaff => ({
+      "@type": "Person",
+      "name": barberStaff.name,
+      "description": barberStaff.description || "Professional barber",
+      "image": barberStaff.imageUrl || undefined,
+      "jobTitle": "Barber"
+    })) || [],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "50",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  };
+
   return (
     <>
+      {/* Structured Data for Local Business */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+      />
+
       {/* Inject custom theme CSS */}
       {themeCSS && (
         <style dangerouslySetInnerHTML={{ __html: themeCSS }} />

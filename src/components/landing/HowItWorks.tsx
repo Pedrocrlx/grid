@@ -12,7 +12,7 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-slate-50 dark:bg-slate-900">
+    <section id="how-it-works" className="py-16 bg-slate-50 dark:bg-slate-900 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mb-3">
           Process

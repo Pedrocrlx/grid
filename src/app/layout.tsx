@@ -14,11 +14,55 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Grid | Your schedule, organized.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://gridschedule.com"),
+  title: {
+    default: "Grid | Your schedule, organized.",
+    template: "%s | Grid",
+  },
   description:
     "Grid helps barbershops manage bookings with precision. Create your professional booking page in minutes and stop the scheduling chaos.",
+  applicationName: "Grid",
+  keywords: [
+    "barbershop",
+    "booking system",
+    "appointment scheduling",
+    "barber management",
+    "salon software",
+    "online booking",
+  ],
+  authors: [{ name: "Grid Team" }],
+  creator: "Grid",
+  publisher: "Grid",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: { url: "/favicon.webp", type: "image/webp" },
+    shortcut: "/favicon.webp",
+    apple: "/favicon.webp",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: process.env.NEXT_PUBLIC_APP_URL || "https://gridschedule.com",
+    siteName: "Grid",
+    title: "Grid | Your schedule, organized.",
+    description: "Professional booking platform for barbershops. Manage appointments with precision.",
+  },
+  twitter: {
+    card: "summary",
+    creator: "@gridschedule",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  verification: {
+    // Add your verification codes here when you have them
+    // google: "your-google-verification-code",
+    // yandex: "your-yandex-verification-code",
   },
 };
 

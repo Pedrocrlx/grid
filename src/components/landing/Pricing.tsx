@@ -27,12 +27,12 @@ export function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="py-24 bg-white dark:bg-slate-950 relative">
+    <section id="pricing" className="py-16 bg-white dark:bg-slate-950 relative lg:py-24">
       <div className="absolute inset-0 grid-bg opacity-30 dark:opacity-5 pointer-events-none"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mb-3">
-            {t.pricing.title}
+            Pricing
           </h2>
           <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-slate-50 mb-4">
             {t.pricing.title}
