@@ -100,9 +100,9 @@ describe("GET /api/onboarding/check-slug", () => {
     }
   });
 
-  it("should normalize uppercase slug to lowercase and check database", async () => {
+  it("should normalize uppercase slug to lowercase and check availability", async () => {
     mockFindUnique.mockResolvedValue(null);
-
+    
     const request = makeRequest("SHOP");
     const response = await GET(request);
     const body = await response.json();
