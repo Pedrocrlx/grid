@@ -130,185 +130,190 @@ export default function OnboardingPage() {
         { id: "1", name: "", price: "", duration: "30" },
     ]);
 
-  // Helper to update shop form fields
-  const updateShopForm = useCallback(<K extends keyof ShopFormState>(
-    field: K,
-    value: ShopFormState[K]
-  ) => {
-    setShopForm(prev => ({ ...prev, [field]: value }));
-  }, []);
-
-  // Auto-generate slug from shop name
-  useEffect(() => {
-    if (shopForm.name && currentStep === 1) {
-      updateShopForm("slug",
-        shopForm.name
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)+/g, "")
-          .substring(0, 50)
-      );
-    }
-  }, [shopForm.name, currentStep, updateShopForm]);
-
-  // Real-time slug availability check (debounced 500ms)
-  useEffect(() => {
-    if (slugDebounceRef.current) clearTimeout(slugDebounceRef.current);
-
-    if (!shopForm.slug || shopForm.slug.length < 3) {
-      setSlugStatus("idle");
-      return;
-    }
-
-    if (!/^[a-z0-9-]+$/.test(shopForm.slug)) {
-      setSlugStatus("invalid");
-      return;
-    }
-
-    setSlugStatus("checking");
-    slugDebounceRef.current = setTimeout(async () => {
-      const { available } = await onboardingService.checkSlug(shopForm.slug);
-      setSlugStatus(available ? "available" : "taken");
-    }, 500);
-
-    return () => {
-      if (slugDebounceRef.current) clearTimeout(slugDebounceRef.current);
-    };
-  }, [shopForm.slug]);
-
-  // Auth guard
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push("/auth/login");
-    }
-  }, [isAuthenticated, isLoading, router]);
-
-  // Show loading state to prevent hydration mismatch
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <GridIcon />
-          <p className="mt-4 text-sm font-medium text-slate-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Don't render anything if not authenticated (will redirect)
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <GridIcon />
-          <p className="mt-4 text-sm font-medium text-slate-600">Redirecting...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // --- Handlers ---
-  const handleNext = () => setCurrentStep((p) => Math.min(p + 1, totalSteps));
-  const handleBack = () => setCurrentStep((p) => Math.max(p - 1, 1));
-
-  const addBarber = () => {
-    if (barbers.length < 10) {
-      setBarbers([...barbers, { id: Date.now().toString(), name: "", specialty: "", phone: "", instagram: "" }]);
-    }
-  };
-  const removeBarber = (id: string) => setBarbers(barbers.filter((b) => b.id !== id));
-  const updateBarber = (id: string, field: keyof Barber, value: string) =>
-    setBarbers(barbers.map((b) => (b.id === id ? { ...b, [field]: value } : b)));
-
-  const addService = () => {
-    if (services.length < 20) {
-      setServices([...services, { id: Date.now().toString(), name: "", price: "", duration: "30" }]);
-    }
-  };
-  const removeService = (id: string) => setServices(services.filter((s) => s.id !== id));
-  const updateService = (id: string, field: keyof ServiceForm, value: string) =>
-    setServices(services.map((s) => (s.id === id ? { ...s, [field]: value } : s)));
-
-  const handleLogoChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error("Logo size must be less than 2MB");
-        return;
-      }
-      if (!file.type.startsWith("image/")) {
-        toast.error("Please select an image file");
-        return;
-      }
-      setShopForm(prev => ({
-        ...prev,
-        logo: file,
-        logoPreview: URL.createObjectURL(file),
-      }));
-    }
-  }, []);
-
-  const handleLaunch = async () => {
-    setIsLaunching(true);
-    let uploadedLogoUrl: string | undefined = undefined;
-
-    try {
-      // 1. Upload logo if it exists
-      if (shopForm.logo) {
-        const toastId = toast.loading("Uploading logo...");
-        try {
-          uploadedLogoUrl = await StorageService.uploadImage(shopForm.logo, 'shops');
-          toast.success("Logo uploaded!", { id: toastId });
-        } catch (uploadError) {
-          toast.error("Failed to upload logo.", { id: toastId });
-          throw new Error("Logo upload failed");
-        }
-      }
-
-      // 2. Sanitize data
-      const finalBarbers = barbers.map(b => ({
-        ...b,
-        phone: sanitizePhone(b.phone),
-      }));
-
-      // 3. Call the completion service
-      await onboardingService.complete({
-        shop: {
-          name: shopForm.name,
-          slug: shopForm.slug,
-          description: shopForm.about,
-          address: shopForm.address,
-          phone: sanitizePhone(shopForm.phone),
-          logoUrl: uploadedLogoUrl,
+    // Helper to update shop form fields
+    const updateShopForm = useCallback(
+        <K extends keyof ShopFormState>(field: K, value: ShopFormState[K]) => {
+            setShopForm((prev) => ({ ...prev, [field]: value }));
         },
-        barbers: finalBarbers
-          .filter((b) => b.name.trim())
-          .map((b) => ({
-            name: b.name,
-            specialty: b.specialty,
-            phone: b.phone,
-            instagram: b.instagram,
-          })),
-        services: services
-          .filter((s) => s.name.trim() && s.price)
-          .map((s) => ({
-            name: s.name,
-            price: s.price,
-            duration: s.duration,
-          })),
-      });
+        [],
+    );
 
-      toast.success("Your barbershop is live!");
-      router.push("/dashboard");
-    } catch (error: any) {
-      console.error("Onboarding failed:", error);
-      toast.error(error.message || "An unexpected error occurred.");
-    } finally {
-      setIsLaunching(false);
-    }
-  };
+    // Auto-generate slug from shop name
+    useEffect(() => {
+        if (shopForm.name && currentStep === 1) {
+            updateShopForm(
+                "slug",
+                shopForm.name
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-z0-9]+/g, "-")
+                    .replace(/(^-|-$)+/g, "")
+                    .substring(0, 50),
+            );
+        }
+    }, [shopForm.name, currentStep, updateShopForm]);
+
+    // Real-time slug availability check (debounced 500ms)
+    useEffect(() => {
+        if (slugDebounceRef.current) clearTimeout(slugDebounceRef.current);
+
+        if (!shopForm.slug || shopForm.slug.length < 3) {
+            setSlugStatus("idle");
+            return;
+        }
+
+        if (!/^[a-z0-9-]+$/.test(shopForm.slug)) {
+            setSlugStatus("invalid");
+            return;
+        }
+
+        setSlugStatus("checking");
+        slugDebounceRef.current = setTimeout(async () => {
+            const { available } = await onboardingService.checkSlug(
+                shopForm.slug,
+            );
+            setSlugStatus(available ? "available" : "taken");
+        }, 500);
+
+        return () => {
+            if (slugDebounceRef.current) clearTimeout(slugDebounceRef.current);
+        };
+    }, [shopForm.slug]);
+
+    // --- Handlers ---
+    const handleNext = () => setCurrentStep((p) => Math.min(p + 1, totalSteps));
+    const handleBack = () => setCurrentStep((p) => Math.max(p - 1, 1));
+
+    const addBarber = () => {
+        if (barbers.length < 10) {
+            setBarbers([
+                ...barbers,
+                {
+                    id: Date.now().toString(),
+                    name: "",
+                    specialty: "",
+                    phone: "",
+                    instagram: "",
+                },
+            ]);
+        }
+    };
+    const removeBarber = (id: string) =>
+        setBarbers(barbers.filter((b) => b.id !== id));
+    const updateBarber = (id: string, field: keyof Barber, value: string) =>
+        setBarbers(
+            barbers.map((b) => (b.id === id ? { ...b, [field]: value } : b)),
+        );
+
+    const addService = () => {
+        if (services.length < 20) {
+            setServices([
+                ...services,
+                {
+                    id: Date.now().toString(),
+                    name: "",
+                    price: "",
+                    duration: "30",
+                },
+            ]);
+        }
+    };
+    const removeService = (id: string) =>
+        setServices(services.filter((s) => s.id !== id));
+    const updateService = (
+        id: string,
+        field: keyof ServiceForm,
+        value: string,
+    ) =>
+        setServices(
+            services.map((s) => (s.id === id ? { ...s, [field]: value } : s)),
+        );
+
+    const handleLogoChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    toast.error("Logo size must be less than 2MB");
+                    return;
+                }
+                if (!file.type.startsWith("image/")) {
+                    toast.error("Please select an image file");
+                    return;
+                }
+                setShopForm((prev) => ({
+                    ...prev,
+                    logo: file,
+                    logoPreview: URL.createObjectURL(file),
+                }));
+            }
+        },
+        [],
+    );
+
+    const handleLaunch = async () => {
+        setIsLaunching(true);
+        let uploadedLogoUrl: string | undefined = undefined;
+
+        try {
+            // 1. Upload logo if it exists
+            if (shopForm.logo) {
+                const toastId = toast.loading("Uploading logo...");
+                try {
+                    uploadedLogoUrl = await StorageService.uploadImage(
+                        shopForm.logo,
+                        "shops",
+                    );
+                    toast.success("Logo uploaded!", { id: toastId });
+                } catch (uploadError) {
+                    toast.error("Failed to upload logo.", { id: toastId });
+                    throw new Error("Logo upload failed");
+                }
+            }
+
+            // 2. Sanitize data
+            const finalBarbers = barbers.map((b) => ({
+                ...b,
+                phone: sanitizePhone(b.phone),
+            }));
+
+            // 3. Call the completion service
+            await onboardingService.complete({
+                shop: {
+                    name: shopForm.name,
+                    slug: shopForm.slug,
+                    description: shopForm.about,
+                    address: shopForm.address,
+                    phone: sanitizePhone(shopForm.phone),
+                    logoUrl: uploadedLogoUrl,
+                },
+                barbers: finalBarbers
+                    .filter((b) => b.name.trim())
+                    .map((b) => ({
+                        name: b.name,
+                        specialty: b.specialty,
+                        phone: b.phone,
+                        instagram: b.instagram,
+                    })),
+                services: services
+                    .filter((s) => s.name.trim() && s.price)
+                    .map((s) => ({
+                        name: s.name,
+                        price: s.price,
+                        duration: s.duration,
+                    })),
+            });
+
+            toast.success("Your barbershop is live!");
+            router.push("/dashboard");
+        } catch (error: any) {
+            console.error("Onboarding failed:", error);
+            toast.error(error.message || "An unexpected error occurred.");
+        } finally {
+            setIsLaunching(false);
+        }
+    };
 
     // --- Validation (memoized for performance) ---
     const isStep1Valid = useMemo(
