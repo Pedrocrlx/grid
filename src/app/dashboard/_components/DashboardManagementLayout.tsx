@@ -43,14 +43,7 @@ export function DashboardManagementLayout({
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center px-4">
-        <div className="text-center">
-          <GridIcon />
-          <p className="text-sm font-bold text-slate-900 dark:text-slate-50 tracking-widest uppercase">Redirecting...</p>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (
