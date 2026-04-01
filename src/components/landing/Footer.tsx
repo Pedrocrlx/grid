@@ -14,14 +14,14 @@ export function Footer() {
           <div className="col-span-2">
             <div className="flex items-center gap-2 mb-6">
               <GridIcon />
-              <span className="text-xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight">Grid</span>
+              <span className="text-lg font-extrabold text-slate-900 dark:text-slate-50 tracking-tight sm:text-xl">Grid</span>
             </div>
-            <p className="text-slate-500 dark:text-slate-400 max-w-xs text-sm leading-relaxed italic">
+            <p className="text-sm leading-relaxed italic text-slate-500 dark:text-slate-400 max-w-xs">
               Your schedule, organized.
             </p>
           </div>
           <div>
-            <h5 className="font-bold text-slate-900 dark:text-slate-50 mb-4 text-sm uppercase tracking-widest">
+            <h5 className="text-sm font-bold uppercase tracking-widest text-slate-900 dark:text-slate-50 mb-4">
               {t.footer.product}
             </h5>
             <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">
@@ -30,7 +30,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h5 className="font-bold text-slate-900 dark:text-slate-50 mb-4 text-sm uppercase tracking-widest">
+            <h5 className="text-sm font-bold uppercase tracking-widest text-slate-900 dark:text-slate-50 mb-4">
               {t.footer.company}
             </h5>
             <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">
@@ -40,7 +40,7 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h5 className="font-bold text-slate-900 dark:text-slate-50 mb-4 text-sm uppercase tracking-widest">
+            <h5 className="text-sm font-bold uppercase tracking-widest text-slate-900 dark:text-slate-50 mb-4">
               {t.footer.legal}
             </h5>
             <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">
@@ -51,7 +51,7 @@ export function Footer() {
           </div>
         </div>
         <div className="border-t border-slate-100 dark:border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-slate-400 dark:text-slate-500 text-xs">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
             © {new Date().getFullYear()} Grid. {t.footer.rights}
           </p>
           <div className="flex gap-6">

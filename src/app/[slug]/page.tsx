@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { BookingSheet } from "./_components/BookingSheet";
 import Link from "next/link";
 import GridIcon from "@/components/landing/GridIcon";
+import { MobileNav } from "./_components/MobileNav";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -18,6 +19,27 @@ function MapPinIcon(props: React.SVGProps<SVGSVGElement>) {
       <circle cx="12" cy="10" r="3" />
     </svg>
   );
+}
+
+function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
+    return (
+        <svg
+        {...props}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        >
+        <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+        </svg>
+    );
 }
 
 export async function generateMetadata({
@@ -228,22 +250,25 @@ export default async function BarberPage({ params }: PageProps) {
                   barber.name.charAt(0)
                 )}
               </div>
-              <span className="text-xl font-extrabold tracking-tight text-white">
+              <span className="text-base sm:text-xl font-extrabold tracking-tight text-white">
                 {barber.name}
               </span>
             </Link>
-            <a href="#services" className="text-sm font-bold text-white/70 hover:text-white transition-colors hidden sm:block">
-              Book Appointment
-            </a>
-            <a href="#about" className="text-sm font-bold text-white/70 hover:text-white transition-colors hidden sm:block">
-              About Us
-            </a>
+            <div className="hidden sm:flex items-center gap-4">
+                <a href="#services" className="text-xs sm:text-sm font-bold text-white/70 hover:text-white transition-colors">
+                Book Appointment
+                </a>
+                <a href="#about" className="text-xs sm:text-sm font-bold text-white/70 hover:text-white transition-colors">
+                About Us
+                </a>
+            </div>
+            <MobileNav />
           </div>
         </nav>
 
         {/* Hero Section */}
         <section 
-          className="pt-40 pb-20 px-6"
+          className="pt-32 md:pt-40 pb-16 md:pb-20 px-6"
           style={{ 
             backgroundColor: primaryColor || '#000000'
           }}
@@ -258,17 +283,17 @@ export default async function BarberPage({ params }: PageProps) {
               </div>
             )}
             
-            <h1 className="text-2xl md:text-7xl font-black tracking-tighter text-white mb-6 leading-[1.1]">
+            <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-white mb-6 leading-[1.1]">
               {barber.name}
             </h1>
             
             {barber.description && (
-              <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed mb-10">
+              <p className="text-base md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed mb-10">
                 {barber.description}
               </p>
             )}
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm font-medium text-slate-600">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-xs sm:text-sm font-medium text-slate-600">
               {barber.address && (
                 <div 
                   className="flex items-center gap-2 px-5 py-3 rounded-full border-2 border-white/30 shadow-sm text-white bg-white/10 backdrop-blur-sm"
@@ -282,11 +307,11 @@ export default async function BarberPage({ params }: PageProps) {
         </section>
 
         {/* Services Section */}
-        <section id="services" className="py-24 bg-white px-6">
+        <section id="services" className="py-16 md:py-24 bg-white px-6">
           <div className="max-w-3xl mx-auto">
             <div className="flex flex-col items-center mb-16">
-              <span className="text-xs font-bold tracking-[0.3em] uppercase text-slate-400 mb-4">Service Menu</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900">
+              <span className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-slate-400 mb-4">Service Menu</span>
+              <h2 className="text-2xl md:text-4xl font-extrabold text-slate-900">
                 Treatments
               </h2>
               <div className="w-12 h-1 mt-6 rounded-full bg-slate-900"></div>
@@ -301,20 +326,20 @@ export default async function BarberPage({ params }: PageProps) {
                 >
                   <div className="flex-1">
                     <div className="flex items-baseline justify-between sm:justify-start gap-4 mb-2">
-                      <h3 className="text-xl md:text-2xl font-bold text-slate-900">
+                      <h3 className="text-lg md:text-2xl font-bold text-slate-900">
                         {service.name}
                       </h3>
                       <div className="hidden sm:block flex-1 border-b-2 border-dotted border-slate-200 mx-4 opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                      <p className="text-2xl font-black text-slate-900 sm:hidden">
+                      <p className="text-xl md:text-2xl font-black text-slate-900 sm:hidden">
                         {Intl.NumberFormat("pt-PT", { style: "currency", currency: "EUR" }).format(Number(service.price))}
                       </p>
                     </div>
                     {service.description && (
-                      <p className="text-slate-500 text-sm leading-relaxed max-w-lg mb-3">
+                      <p className="text-slate-500 text-xs sm:text-sm leading-relaxed max-w-lg mb-3">
                         {service.description}
                       </p>
                     )}
-                    <div className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-3 py-1 rounded-lg">
+                    <div className="inline-flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-3 py-1 rounded-lg">
                       {service.duration} mins
                     </div>
                   </div>
@@ -350,31 +375,31 @@ export default async function BarberPage({ params }: PageProps) {
       {/* About Section */}
       <section 
         id="about" 
-        className="py-24 px-6"
+        className="py-16 md:py-24 px-6"
         style={{ 
           backgroundColor: primaryColor || '#000000'
         }}
       >
         <div className="max-w-3xl mx-auto text-center">
-          <span className="text-xs font-bold tracking-[0.3em] uppercase text-white/60 mb-4 block">
+          <span className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-white/60 mb-4 block">
             About Us
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-6">
+          <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-6">
             Our Story
           </h2>
-          <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+          <p className="text-base md:text-xl text-white/80 leading-relaxed">
             {barber.description || "Welcome to our barber shop! We are dedicated to providing top-notch grooming services in a friendly and welcoming environment. Our team of skilled barbers is passionate about their craft and committed to making you look and feel your best. Whether you're looking for a classic haircut, a modern style, or a relaxing shave, we've got you covered. Book your appointment today and experience the difference!"}
           </p>
         </div>
       </section>
 
       {/* Barbers Section */}
-      <section className="py-24 bg-[#FAFAFA] px-6">
+      <section className="py-16 md:py-24 bg-[#FAFAFA] px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="text-xs font-bold tracking-[0.3em] uppercase text-slate-400 mb-4 block">
+          <span className="text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase text-slate-400 mb-4 block">
             The Team
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-16">
+          <h2 className="text-2xl md:text-4xl font-extrabold text-slate-900 mb-16">
             Master Barbers
           </h2>
 
@@ -391,16 +416,16 @@ export default async function BarberPage({ params }: PageProps) {
                       </span>
                     )}
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900">
                     {b.name}
                   </h3>
-                  <p className="text-sm text-slate-500 mt-1">
+                  <p className="text-xs sm:text-sm text-slate-500 mt-1">
                     {b.description || "Barber"}
                   </p>
                 </div>
               ))
             ) : (
-              <p className="text-slate-500 w-full">No barbers available at the moment.</p>
+              <p className="text-slate-500 w-full text-sm">No barbers available at the moment.</p>
             )}
           </div>
         </div>
@@ -408,7 +433,7 @@ export default async function BarberPage({ params }: PageProps) {
 
         {/* Footer */}
         <footer 
-          className="pt-20 pb-10 px-6 text-center"
+          className="pt-16 md:pt-20 pb-8 md:pb-10 px-6 text-center"
           style={{ backgroundColor: primaryColor || '#000000' }}
         >
           <div className="max-w-4xl mx-auto">
@@ -422,10 +447,18 @@ export default async function BarberPage({ params }: PageProps) {
                 barber.name.charAt(0)
               )}
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">{barber.name}</h2>
-            <p className="text-white/70 text-sm mb-12">{barber.address}</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">{barber.name}</h2>
+            <p className="text-white/70 text-xs sm:text-sm mb-4">{barber.address}</p>
+            <div className="flex justify-center items-center gap-4 mb-8">
+                {barber.phone && <p className="text-white/70 text-xs sm:text-sm">{barber.phone}</p>}
+                {barber.instagram && (
+                    <Link href={`https://instagram.com/${barber.instagram}`} target="_blank" rel="noopener noreferrer">
+                        <InstagramIcon className="w-5 h-5 text-white/70 hover:text-white transition-colors" />
+                    </Link>
+                )}
+            </div>
             
-            <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-white/50 tracking-wider">
+            <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] sm:text-xs font-medium text-white/50 tracking-wider">
               <p>© {new Date().getFullYear()} {barber.name}.</p>
               <div className="flex items-center gap-2">
                 <p>Powered by</p>

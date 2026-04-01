@@ -11,22 +11,22 @@ export function Hero() {
       <div className="absolute inset-0 grid-bg pointer-events-none opacity-50 dark:opacity-10"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl lg:text-7xl font-extrabold text-slate-900 dark:text-slate-50 leading-[1.1] mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-slate-50 leading-[1.1] mb-6">
             {t.hero.headline} <br />
             <span className="text-blue-600 dark:text-blue-400">{t.hero.headlineAccent}</span>
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
             {t.hero.subheadline}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/auth/signup" className="cursor-pointer w-full sm:w-auto px-8 py-4 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-xl font-bold text-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-all shadow-xl shadow-slate-900/10 dark:shadow-slate-100/10">
+            <Link href="/auth/signup" className="cursor-pointer w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-xl font-bold text-base sm:text-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-all shadow-xl shadow-slate-900/10 dark:shadow-slate-100/10">
               {t.hero.ctaPrimary}
             </Link>
-            <button className="cursor-pointer w-full sm:w-auto px-8 py-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-800 rounded-xl font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+            <button className="cursor-pointer w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 border border-slate-200 dark:border-slate-800 rounded-xl font-bold text-base sm:text-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
               {t.hero.ctaSecondary}
             </button>
           </div>
-          <div className="mt-8 flex items-center justify-center gap-2 text-sm text-slate-500 dark:text-slate-400 font-medium">
+          <div className="mt-8 flex items-center justify-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
             <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>

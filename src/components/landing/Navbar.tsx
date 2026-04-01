@@ -26,7 +26,7 @@ export function Navbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2">
             <GridIcon />
-            <span className="text-xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight">
+            <span className="text-lg font-extrabold text-slate-900 dark:text-slate-50 tracking-tight sm:text-xl">
               Grid
             </span>
           </div>

@@ -13,13 +13,13 @@ export function Stats() {
   ];
 
   return (
-    <div className="bg-white dark:bg-slate-900 py-12">
+    <div className="bg-white dark:bg-slate-900 py-12 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {stats.map(({ value, labelKey }) => (
             <div key={labelKey}>
-              <div className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">{value}</div>
-              <div className="text-slate-600 dark:text-slate-400 text-xs font-bold tracking-widest uppercase">
+              <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-1">{value}</div>
+              <div className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-slate-600 dark:text-slate-400">
                 {t.stats[labelKey]}
               </div>
             </div>

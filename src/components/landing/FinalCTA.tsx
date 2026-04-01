@@ -9,18 +9,18 @@ export function FinalCTA() {
     <section className="py-16 bg-white dark:bg-slate-900 relative overflow-hidden lg:py-24">
       <div className="absolute inset-0 grid-bg opacity-10 dark:opacity-5 pointer-events-none"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">
+        <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-6 sm:text-4xl md:text-5xl">
           {t.finalCta.title}
         </h2>
-        <p className="text-slate-600 dark:text-slate-400 text-xl max-w-2xl mx-auto mb-10">
+        <p className="text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 sm:text-lg md:text-xl">
           {t.finalCta.subtitle}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button className="w-full sm:w-auto px-10 py-5 bg-blue-600 dark:bg-blue-500 text-white rounded-xl font-extrabold text-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-all shadow-2xl shadow-blue-500/20">
+          <button className="w-full sm:w-auto px-8 py-4 bg-blue-600 dark:bg-blue-500 text-white rounded-xl font-bold text-base sm:text-lg md:text-xl hover:bg-blue-700 dark:hover:bg-blue-600 transition-all shadow-2xl shadow-blue-500/20">
             {t.finalCta.cta}
           </button>
         </div>
-        <p className="mt-8 text-slate-500 text-sm font-medium">{t.finalCta.noCreditCard}</p>
+        <p className="mt-8 text-sm font-medium text-slate-500">{t.finalCta.noCreditCard}</p>
       </div>
     </section>
   );

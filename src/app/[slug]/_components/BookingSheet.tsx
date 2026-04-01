@@ -66,6 +66,7 @@ const TIME_SLOTS = generateTimeSlots(9, 19, 30);
 
 export function BookingSheet({ service, barbers, primaryColor = '#000000' }: BookingSheetProps) {
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [month, setMonth] = useState<Date>(new Date());
   const [selectedBarber, setSelectedBarber] = useState<string>("");
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [customerName, setCustomerName] = useState("");
@@ -74,6 +75,38 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [availableDates, setAvailableDates] = useState<Date[]>([]);
   const [isLoadingAvailability, setIsLoadingAvailability] = useState(false);
+
+  // Calculate date boundaries for calendar
+  const calendarBoundaries = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const maxDate = new Date(today);
+    maxDate.setMonth(maxDate.getMonth() + 2);
+    
+    return { fromDate: today, toDate: maxDate, fromMonth: today, toMonth: maxDate };
+  }, []);
+
+  // Handle month change with validation
+  const handleMonthChange = useCallback((newMonth: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Prevent navigation to months before current month
+    if (newMonth < today) {
+      return;
+    }
+    
+    // Prevent navigation beyond 2 months
+    const maxMonth = new Date(today);
+    maxMonth.setMonth(maxMonth.getMonth() + 2);
+    
+    if (newMonth > maxMonth) {
+      return;
+    }
+    
+    setMonth(newMonth);
+  }, []);
 
   // Fetch availability when barber is selected
   useEffect(() => {
@@ -87,13 +120,13 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
       try {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        
+
         const endDate = new Date(today);
         endDate.setDate(endDate.getDate() + 30);
-        
+
         // Generate cache key
         const cacheKey = generateCacheKey(selectedBarber, today, endDate);
-        
+
         // Check cache first
         const cached = availabilityCache.get(cacheKey);
         if (cached && isCacheFresh(cached.timestamp)) {
@@ -101,7 +134,7 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
           setAvailableDates(cached.data.availableDates);
           return;
         }
-        
+
         // Fetch fresh data if cache miss or stale
         const response = await getBarberAvailableDates({
           barberId: selectedBarber,
@@ -109,13 +142,13 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
           endDate: endDate,
           serviceDuration: service.duration,
         });
-        
+
         // Update cache with timestamp
         availabilityCache.set(cacheKey, {
           data: response,
           timestamp: Date.now(),
         });
-        
+
         setAvailableDates(response.availableDates);
       } catch (error) {
         console.error("Failed to fetch availability:", error);
@@ -150,7 +183,7 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
   }, []);
 
   // Memoized check for submit button disabled state
-  const isSubmitDisabled = useMemo(() => 
+  const isSubmitDisabled = useMemo(() =>
     !selectedTime || !customerName || isSubmitting,
     [selectedTime, customerName, isSubmitting]
   );
@@ -197,12 +230,12 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
     }
 
     setIsSubmitting(true);
-    
+
     // Set up informational toast for long-running operations (>3 seconds)
     const longRunningToastTimeout = setTimeout(() => {
       toast.info("Processing your booking, please wait...");
     }, 3000);
-    
+
     try {
       const [hours, minutes] = selectedTime.split(":").map(Number);
       const start = new Date(date!);
@@ -300,7 +333,7 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <button 
+        <button
           className="px-6 py-2.5 text-white text-sm font-bold rounded-full hover:opacity-80 transition-all active:scale-95 whitespace-nowrap shadow-sm"
           style={{ backgroundColor: primaryColor }}
         >
@@ -308,32 +341,33 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
         </button>
       </DrawerTrigger>
 
-      <DrawerContent className="h-[92vh] sm:h-[90vh] bg-white border-t border-slate-200">
-        <DrawerHeader className="border-b border-slate-100 pb-6 pt-6 px-6 text-left">
-          <div className="max-w-md mx-auto w-full">
-            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 block mb-2">
-              Appointment Details
-            </span>
-            <DrawerTitle className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              {service.name}
-            </DrawerTitle>
-            <div className="flex items-center gap-3 mt-3">
-              <span className="text-lg font-bold text-slate-900">
-                {Intl.NumberFormat("pt-PT", {
-                  style: "currency",
-                  currency: "EUR",
-                }).format(service.price)}
+      <DrawerContent className="bg-white border-t border-slate-200">
+        <div className="overflow-y-auto max-h-[85vh]">
+          <DrawerHeader className="border-b border-slate-100 pb-6 pt-6 px-6 text-left">
+            <div className="max-w-md mx-auto w-full">
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 block mb-2">
+                Appointment Details
               </span>
-              <span className="text-slate-300">•</span>
-              <span className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-1 rounded-md">
-                {service.duration} mins
-              </span>
+              <DrawerTitle className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                {service.name}
+              </DrawerTitle>
+              <div className="flex items-center gap-3 mt-3">
+                <span className="text-lg font-bold text-slate-900">
+                  {Intl.NumberFormat("pt-PT", {
+                    style: "currency",
+                    currency: "EUR",
+                  }).format(service.price)}
+                </span>
+                <span className="text-slate-300">•</span>
+                <span className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-1 rounded-md">
+                  {service.duration} mins
+                </span>
+              </div>
             </div>
-          </div>
-        </DrawerHeader>
+          </DrawerHeader>
 
-        <div className="p-6 overflow-y-auto pb-24 h-full">
-          <div className="max-w-md mx-auto space-y-8">
+          <div className="p-6">
+            <div className="max-w-md mx-auto space-y-8">
 
             {/* Section 1: Your Details */}
             <div className="space-y-5">
@@ -346,10 +380,16 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
                     Full Name
                   </label>
                   <input
+                    type="text"
                     className="w-full px-4 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all text-sm font-medium text-slate-900"
                     placeholder="Enter your full name"
                     value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      // Only allow letters, spaces, hyphens, and apostrophes
+                      const sanitized = value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '');
+                      setCustomerName(sanitized);
+                    }}
                   />
                 </div>
 
@@ -378,10 +418,18 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
                       Phone Number
                     </label>
                     <input
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       className="w-full px-4 py-3.5 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all text-sm font-medium text-slate-900"
                       placeholder={COUNTRY_CONFIGS[selectedCountry].placeholder}
                       value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Only allow digits
+                        const sanitized = value.replace(/[^0-9]/g, '');
+                        setCustomerPhone(sanitized);
+                      }}
                       maxLength={COUNTRY_CONFIGS[selectedCountry].maxLength}
                     />
                   </div>
@@ -409,19 +457,27 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
             {/* Section 3: Date & Time */}
             <div className="space-y-5">
               <h3 className="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2">3. Date & Time</h3>
-                {isLoadingAvailability ? (
-                  <div className="flex items-center justify-center h-[200px]">
-                    <div className="text-center">
-                      <div className="w-8 h-8 border-4 border-slate-900 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                      <p className="text-sm text-slate-500 font-medium">Loading dates...</p>
-                    </div>
+              {isLoadingAvailability ? (
+                <div className="flex items-center justify-center h-[200px]">
+                  <div className="text-center">
+                    <div className="w-8 h-8 border-4 border-slate-900 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-sm text-slate-500 font-medium">Loading dates...</p>
                   </div>
-                ) : (
+                </div>
+              ) : (
+                <div className="w-full overflow-hidden scale-90 sm:scale-100 transform-origin-center transition-transform">
                   <Calendar
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-                    className="rounded-2xl text-slate-100 border-none shadow-none bg-slate-900"
+                    month={month}
+                    onMonthChange={handleMonthChange}
+                    className="w-full max-w-full rounded-2xl text-slate-100 border-none shadow-none bg-slate-900"
+                    classNames={{
+                      root: "w-full max-w-full",
+                    }}
+                    fromDate={calendarBoundaries.fromDate}
+                    toDate={calendarBoundaries.toDate}
                     disabled={(date) => {
                       const today = new Date();
                       today.setHours(0, 0, 0, 0);
@@ -434,8 +490,9 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
                       );
                     }}
                   />
-                )}
-            
+                </div>
+              )}
+
 
               {/* Time Slots */}
               {date && selectedBarber && (
@@ -448,11 +505,10 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
                       <button
                         key={time}
                         onClick={() => setSelectedTime(time)}
-                        className={`py-3 rounded-2xl font-bold text-sm transition-all border ${
-                          selectedTime === time
+                        className={`py-3 rounded-2xl font-bold text-sm transition-all border ${selectedTime === time
                             ? "bg-slate-900 text-white border-slate-900 shadow-md scale-[1.02]"
                             : "bg-white border-slate-200 text-slate-600 hover:border-slate-400 hover:text-slate-900"
-                        }`}
+                          }`}
                       >
                         {time}
                       </button>
@@ -463,14 +519,13 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
             </div>
 
             {/* Submit Button */}
-            <div className="pt-6">
+            <div className="pb-6 pt-6">
               <button
                 disabled={isSubmitDisabled}
-                className={`w-full rounded-2xl font-bold text-base transition-all flex items-center justify-center h-[56px] ${
-                  isSubmitDisabled
+                className={`w-full rounded-2xl font-bold text-base transition-all flex items-center justify-center h-[56px] ${isSubmitDisabled
                     ? "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
                     : "text-white hover:opacity-80 shadow-lg active:scale-[0.98]"
-                }`}
+                  }`}
                 style={!isSubmitDisabled ? { backgroundColor: primaryColor } : {}}
                 onClick={handleBookingSubmit}
               >
@@ -484,8 +539,8 @@ export function BookingSheet({ service, barbers, primaryColor = '#000000' }: Boo
                 )}
               </button>
             </div>
-
           </div>
+        </div>
         </div>
       </DrawerContent>
     </Drawer>

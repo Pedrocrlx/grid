@@ -14,22 +14,22 @@ export function HowItWorks() {
   return (
     <section id="how-it-works" className="py-16 bg-slate-50 dark:bg-slate-900 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mb-3">
+        <h2 className="text-xs sm:text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mb-3">
           Process
         </h2>
-        <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-slate-50 mb-20">
+        <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-slate-50 mb-12 sm:mb-20">
           {t.howItWorks.title}
         </p>
-        <div className="flex flex-col md:flex-row gap-12 relative">
+        <div className="flex flex-col md:flex-row gap-8 sm:gap-12 relative">
           {steps.map(({ number, key }) => (
             <div key={key} className="flex-1 relative">
-              <div className="w-16 h-16 bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-900 rounded-2xl shadow-xl flex items-center justify-center mx-auto mb-6 relative z-10">
-                <span className="text-2xl font-black text-blue-600 dark:text-blue-400">{number}</span>
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-900 rounded-2xl shadow-xl flex items-center justify-center mx-auto mb-6 relative z-10">
+                <span className="text-xl sm:text-2xl font-black text-blue-600 dark:text-blue-400">{number}</span>
               </div>
-              <h4 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">
+              <h4 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">
                 {t.howItWorks.steps[key].title}
               </h4>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
                 {t.howItWorks.steps[key].description}
               </p>
             </div>

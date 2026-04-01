@@ -73,7 +73,7 @@ export default function DashboardPage() {
               <span className="text-xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight">Grid</span>
             </Link>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <LanguageSelect />
               <ThemeToggle />
               <div className="hidden sm:block text-right">
