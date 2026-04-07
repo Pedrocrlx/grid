@@ -2,7 +2,7 @@ import { Navbar, Footer } from "@/components/landing";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Terms of Service - Grid",
+  title: "Terms of Service",
   description: "Grid Terms of Service - Legal terms and conditions for using Grid barbershop booking platform.",
 };
 

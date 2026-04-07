@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Setup Your Barbershop - Grid",
+  title: "Setup Your Barbershop",
   description: "Complete your barbershop setup with Grid. Add your services, barbers, and create your professional booking page.",
   robots: {
     index: false,

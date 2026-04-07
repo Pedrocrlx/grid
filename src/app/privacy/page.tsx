@@ -2,7 +2,7 @@ import { Navbar, Footer } from "@/components/landing";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Privacy Policy - Grid",
+  title: "Privacy Policy",
   description: "Grid Privacy Policy - How we collect, use, and protect your personal data on the Grid barbershop booking platform.",
 };
 
