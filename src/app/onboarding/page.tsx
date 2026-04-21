@@ -96,10 +96,96 @@ interface ShopFormState {
 
 type SlugStatus = "idle" | "checking" | "available" | "taken" | "invalid";
 
+const FALLBACK_ONBOARDING = {
+    toast: {
+        logoTooLarge: "Logo must be smaller than 2MB",
+        logoFileType: "Please upload an image file",
+        uploadingLogo: "Uploading logo...",
+        logoUploaded: "Logo uploaded successfully",
+        logoUploadFailed: "Failed to upload logo",
+        launchSuccess: "Your barbershop is live!",
+        unexpectedError: "Something went wrong",
+    },
+    stepLabels: {
+        shop: "Shop",
+        team: "Team",
+        services: "Services",
+        launch: "Launch",
+    },
+    step1: {
+        title: "Create your barbershop",
+        subtitle: "Set your shop information",
+        logoAlt: "Shop logo",
+        logoUploadTitle: "Upload logo",
+        logoLabel: "Logo",
+        logoHint: "Optional - max 2MB",
+        shopNameLabel: "Shop name",
+        shopNamePlaceholder: "e.g. Downtown Barbers",
+        bookingUrlLabel: "Booking URL",
+        domainPrefix: "grid.com/",
+        slugPlaceholder: "my-shop",
+        slugTaken: "This slug is already taken",
+        slugInvalid: "Only lowercase letters, numbers and hyphens",
+        slugAvailable: "Slug available",
+        aboutLabel: "Description",
+        aboutPlaceholder: "Tell customers about your shop",
+        phoneLabel: "Phone",
+        phonePlaceholder: "+351...",
+        addressLabel: "Address",
+        addressPlaceholder: "Street, city",
+    },
+    step2: {
+        title: "Add your barbers",
+        introPrefix: "Add your team.",
+        introFallbackName: "your shop",
+        introMax: "Maximum 10 barbers.",
+        introUpTo: "You can add up to 10 barbers.",
+        barberNamePlaceholder: "Barber {{index}} Name",
+        removeBarberTitle: "Remove barber",
+        specialtyPlaceholder: "Specialty (optional)",
+        phonePlaceholder: "Phone / WhatsApp *",
+        instagramPlaceholder: "Instagram (optional)",
+        addAnother: "Add another barber",
+        maxReached: "Maximum of 10 barbers reached",
+    },
+    step3: {
+        title: "Add your services",
+        introQuestion: "Which services do you offer?",
+        introMax: "Maximum 20 services.",
+        introUpTo: "You can add up to 20 services.",
+        serviceName: "Service",
+        serviceNamePlaceholder: "e.g. Haircut",
+        price: "Price",
+        pricePlaceholder: "20",
+        duration: "Duration",
+        addAnother: "Add another service",
+        maxReached: "Maximum of 20 services reached",
+    },
+    step4: {
+        title: "Preview & Launch",
+        subtitle: "Review your setup before going live",
+        fallbackInitial: "S",
+        shopName: "Shop Name",
+        bookingUrl: "Booking URL",
+        location: "Location",
+        contact: "Contact",
+        teamSize: "Team Size",
+        barbers: "Barbers",
+        services: "Services",
+        active: "Active",
+    },
+    nav: {
+        back: "Back",
+        continue: "Continue",
+        launching: "Launching...",
+        launch: "Launch",
+    },
+} as const;
+
 export default function OnboardingPage() {
     const { isAuthenticated, isLoading } = useAuth();
     const { t } = useI18n();
-    const onboarding = (t as unknown as { onboarding: Record<string, any> }).onboarding;
+    const onboarding = (t as { onboarding?: typeof FALLBACK_ONBOARDING }).onboarding ?? FALLBACK_ONBOARDING;
     const router = useRouter();
 
     const [currentStep, setCurrentStep] = useState(1);
@@ -262,15 +348,15 @@ export default function OnboardingPage() {
         try {
             // 1. Upload logo if it exists
             if (shopForm.logo) {
-                const toastId = toast.loading(t.onboarding.toast.uploadingLogo);
+                const toastId = toast.loading(onboarding.toast.uploadingLogo);
                 try {
                     uploadedLogoUrl = await StorageService.uploadImage(
                         shopForm.logo,
                         "shops",
                     );
-                    toast.success(t.onboarding.toast.logoUploaded, { id: toastId });
+                    toast.success(onboarding.toast.logoUploaded, { id: toastId });
                 } catch (uploadError) {
-                    toast.error(t.onboarding.toast.logoUploadFailed, { id: toastId });
+                    toast.error(onboarding.toast.logoUploadFailed, { id: toastId });
                     throw new Error("Logo upload failed");
                 }
             }
@@ -308,11 +394,11 @@ export default function OnboardingPage() {
                     })),
             });
 
-            toast.success(t.onboarding.toast.launchSuccess);
+            toast.success(onboarding.toast.launchSuccess);
             router.push("/dashboard");
         } catch (error: any) {
             console.error("Onboarding failed:", error);
-            toast.error(error.message || t.onboarding.toast.unexpectedError);
+            toast.error(error.message || onboarding.toast.unexpectedError);
         } finally {
             setIsLaunching(false);
         }
@@ -423,10 +509,10 @@ export default function OnboardingPage() {
                     </div>
                     <div className="flex justify-between mt-3 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                         {([
-                            t.onboarding.stepLabels.shop,
-                            t.onboarding.stepLabels.team,
-                            t.onboarding.stepLabels.services,
-                            t.onboarding.stepLabels.launch,
+                            onboarding.stepLabels.shop,
+                            onboarding.stepLabels.team,
+                            onboarding.stepLabels.services,
+                            onboarding.stepLabels.launch,
                         ] as const).map(
                             (label, i) => {
                                 const offsets = ["", "mx-8", "", ""];
@@ -449,10 +535,10 @@ export default function OnboardingPage() {
                     {currentStep === 1 && (
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-50 mb-2">
-                                {t.onboarding.step1.title}
+                                {onboarding.step1.title}
                             </h2>
                             <p className="text-slate-500 dark:text-slate-400 mb-8">
-                                {t.onboarding.step1.subtitle}
+                                {onboarding.step1.subtitle}
                             </p>
 
                             <div className="space-y-6">
@@ -467,7 +553,7 @@ export default function OnboardingPage() {
                                         {shopForm.logoPreview ? (
                                             <img
                                                 src={shopForm.logoPreview}
-                                                alt={t.onboarding.step1.logoAlt}
+                                                alt={onboarding.step1.logoAlt}
                                                 className="w-full h-full object-cover"
                                             />
                                         ) : (
@@ -478,16 +564,16 @@ export default function OnboardingPage() {
                                             type="file"
                                             className="hidden"
                                             onChange={handleLogoChange}
-                                            title={t.onboarding.step1.logoUploadTitle}
+                                            title={onboarding.step1.logoUploadTitle}
                                             accept="image/*"
                                         />
                                     </div>
                                     <div>
                                         <p className="text-sm font-bold text-slate-700 dark:text-slate-200">
-                                            {t.onboarding.step1.logoLabel}
+                                            {onboarding.step1.logoLabel}
                                         </p>
                                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                                            {t.onboarding.step1.logoHint}
+                                            {onboarding.step1.logoHint}
                                         </p>
                                     </div>
                                 </div>
@@ -498,12 +584,12 @@ export default function OnboardingPage() {
                                             htmlFor="shopName"
                                             className={labelClass}
                                         >
-                                            {t.onboarding.step1.shopNameLabel}
+                                            {onboarding.step1.shopNameLabel}
                                         </label>
                                         <input
                                             id="shopName"
                                             type="text"
-                                            placeholder={t.onboarding.step1.shopNamePlaceholder}
+                                            placeholder={onboarding.step1.shopNamePlaceholder}
                                             value={shopForm.name}
                                             onChange={(e) =>
                                                 updateShopForm(
@@ -519,7 +605,7 @@ export default function OnboardingPage() {
                                             htmlFor="shopSlug"
                                             className={labelClass}
                                         >
-                                            {t.onboarding.step1.bookingUrlLabel}
+                                            {onboarding.step1.bookingUrlLabel}
                                         </label>
                                         <div
                                             className={`flex rounded-xl overflow-hidden border transition-all bg-white dark:bg-slate-800 focus-within:ring-2 ${
@@ -532,12 +618,12 @@ export default function OnboardingPage() {
                                             }`}
                                         >
                                             <span className="px-4 py-3 bg-slate-50 dark:bg-slate-700/60 text-slate-500 dark:text-slate-400 text-sm border-r border-slate-200 dark:border-slate-700 flex items-center select-none whitespace-nowrap">
-                                                {t.onboarding.step1.domainPrefix}
+                                                {onboarding.step1.domainPrefix}
                                             </span>
                                             <input
                                                 id="shopSlug"
                                                 type="text"
-                                                placeholder={t.onboarding.step1.slugPlaceholder}
+                                                placeholder={onboarding.step1.slugPlaceholder}
                                                 value={shopForm.slug}
                                                 onChange={(e) =>
                                                     updateShopForm(
@@ -617,17 +703,17 @@ export default function OnboardingPage() {
                                         </div>
                                         {slugStatus === "taken" && (
                                             <p className="mt-1.5 text-xs text-red-500 font-medium">
-                                                {t.onboarding.step1.slugTaken}
+                                                {onboarding.step1.slugTaken}
                                             </p>
                                         )}
                                         {slugStatus === "invalid" && (
                                             <p className="mt-1.5 text-xs text-red-500 font-medium">
-                                                {t.onboarding.step1.slugInvalid}
+                                                {onboarding.step1.slugInvalid}
                                             </p>
                                         )}
                                         {slugStatus === "available" && (
                                             <p className="mt-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
-                                                {t.onboarding.step1.slugAvailable}
+                                                {onboarding.step1.slugAvailable}
                                             </p>
                                         )}
                                     </div>
@@ -638,12 +724,12 @@ export default function OnboardingPage() {
                                         htmlFor="shopAbout"
                                         className={labelClass}
                                     >
-                                        {t.onboarding.step1.aboutLabel}
+                                        {onboarding.step1.aboutLabel}
                                     </label>
                                     <textarea
                                         id="shopAbout"
                                         rows={3}
-                                        placeholder={t.onboarding.step1.aboutPlaceholder}
+                                        placeholder={onboarding.step1.aboutPlaceholder}
                                         value={shopForm.about}
                                         onChange={(e) =>
                                             updateShopForm(
@@ -661,14 +747,14 @@ export default function OnboardingPage() {
                                             htmlFor="shopPhone"
                                             className={labelClass}
                                         >
-                                            {t.onboarding.step1.phoneLabel}
+                                            {onboarding.step1.phoneLabel}
                                         </label>
                                         <input
                                             id="shopPhone"
                                             type="text"
                                             inputMode="numeric"
                                             pattern="[0-9]*"
-                                            placeholder={t.onboarding.step1.phonePlaceholder}
+                                            placeholder={onboarding.step1.phonePlaceholder}
                                             value={shopForm.phone}
                                             onChange={(e) =>
                                                 updateShopForm(
@@ -684,12 +770,12 @@ export default function OnboardingPage() {
                                             htmlFor="shopAddress"
                                             className={labelClass}
                                         >
-                                            {t.onboarding.step1.addressLabel}
+                                            {onboarding.step1.addressLabel}
                                         </label>
                                         <input
                                             id="shopAddress"
                                             type="text"
-                                            placeholder={t.onboarding.step1.addressPlaceholder}
+                                            placeholder={onboarding.step1.addressPlaceholder}
                                             value={shopForm.address}
                                             onChange={(e) =>
                                                 updateShopForm(
@@ -710,7 +796,7 @@ export default function OnboardingPage() {
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <div className="flex items-start justify-between mb-2">
                                 <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-50">
-                                    {t.onboarding.step2.title}
+                                    {onboarding.step2.title}
                                 </h2>
                                 <span
                                     className={`text-sm font-bold px-3 py-1 rounded-full mt-1 ${
@@ -723,11 +809,11 @@ export default function OnboardingPage() {
                                 </span>
                             </div>
                             <p className="text-slate-500 dark:text-slate-400 mb-8">
-                                {t.onboarding.step2.introPrefix} {shopForm.name || t.onboarding.step2.introFallbackName}
+                                {onboarding.step2.introPrefix} {shopForm.name || onboarding.step2.introFallbackName}
                                 ?
                                 {barbers.length >= 10
-                                    ? ` ${t.onboarding.step2.introMax}`
-                                    : ` ${t.onboarding.step2.introUpTo}`}
+                                    ? ` ${onboarding.step2.introMax}`
+                                    : ` ${onboarding.step2.introUpTo}`}
                             </p>
 
                             <div className="space-y-6">
@@ -750,7 +836,7 @@ export default function OnboardingPage() {
                                             <div className="flex-1 min-w-0">
                                                 <input
                                                     type="text"
-                                                    placeholder={t.onboarding.step2.barberNamePlaceholder.replace("{{index}}", String(index + 1))}
+                                                    placeholder={onboarding.step2.barberNamePlaceholder.replace("{{index}}", String(index + 1))}
                                                     value={barber.name}
                                                     onChange={(e) =>
                                                         updateBarber(
@@ -768,7 +854,7 @@ export default function OnboardingPage() {
                                                         removeBarber(barber.id)
                                                     }
                                                     className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors shrink-0"
-                                                    title={t.onboarding.step2.removeBarberTitle}
+                                                    title={onboarding.step2.removeBarberTitle}
                                                 >
                                                     <TrashIcon className="w-4 h-4" />
                                                 </button>
@@ -777,7 +863,7 @@ export default function OnboardingPage() {
 
                                         <input
                                             type="text"
-                                            placeholder={t.onboarding.step2.specialtyPlaceholder}
+                                            placeholder={onboarding.step2.specialtyPlaceholder}
                                             value={barber.specialty ?? ""}
                                             onChange={(e) =>
                                                 updateBarber(
@@ -792,7 +878,7 @@ export default function OnboardingPage() {
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             <input
                                                 type="tel"
-                                                placeholder={t.onboarding.step2.phonePlaceholder}
+                                                placeholder={onboarding.step2.phonePlaceholder}
                                                 value={barber.phone}
                                                 onChange={(e) =>
                                                     updateBarber(
@@ -809,7 +895,7 @@ export default function OnboardingPage() {
                                                 </span>
                                                 <input
                                                     type="text"
-                                                    placeholder={t.onboarding.step2.instagramPlaceholder}
+                                                    placeholder={onboarding.step2.instagramPlaceholder}
                                                     value={
                                                         barber.instagram ?? ""
                                                     }
@@ -833,11 +919,11 @@ export default function OnboardingPage() {
                                         className="flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 py-2 px-1 transition-colors"
                                     >
                                         <PlusIcon className="w-4 h-4" />
-                                        {t.onboarding.step2.addAnother}
+                                        {onboarding.step2.addAnother}
                                     </button>
                                 ) : (
                                     <p className="text-xs font-medium text-amber-600 dark:text-amber-400 py-2 px-1">
-                                        {t.onboarding.step2.maxReached}
+                                        {onboarding.step2.maxReached}
                                     </p>
                                 )}
                             </div>
@@ -849,7 +935,7 @@ export default function OnboardingPage() {
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <div className="flex items-start justify-between mb-2">
                                 <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-50">
-                                    {t.onboarding.step3.title}
+                                    {onboarding.step3.title}
                                 </h2>
                                 <span
                                     className={`text-sm font-bold px-3 py-1 rounded-full mt-1 ${
@@ -862,22 +948,22 @@ export default function OnboardingPage() {
                                 </span>
                             </div>
                             <p className="text-slate-500 dark:text-slate-400 mb-8">
-                                {t.onboarding.step3.introQuestion}
+                                {onboarding.step3.introQuestion}
                                 {services.length >= 20
-                                    ? ` ${t.onboarding.step3.introMax}`
-                                    : ` ${t.onboarding.step3.introUpTo}`}
+                                    ? ` ${onboarding.step3.introMax}`
+                                    : ` ${onboarding.step3.introUpTo}`}
                             </p>
 
                             <div className="space-y-4">
                                 <div className="hidden sm:flex gap-3 px-1">
                                     <div className="flex-[2] text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                        {t.onboarding.step3.serviceName}
+                                        {onboarding.step3.serviceName}
                                     </div>
                                     <div className="flex-1 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                        {t.onboarding.step3.price}
+                                        {onboarding.step3.price}
                                     </div>
                                     <div className="flex-1 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                        {t.onboarding.step3.duration}
+                                        {onboarding.step3.duration}
                                     </div>
                                     <div className="w-11" />
                                 </div>
@@ -889,11 +975,11 @@ export default function OnboardingPage() {
                                     >
                                         <div className="w-full sm:flex-[2]">
                                             <label className="block sm:hidden text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">
-                                                 {t.onboarding.step3.serviceName}
+                                                 {onboarding.step3.serviceName}
                                              </label>
                                             <input
                                                 type="text"
-                                                 placeholder={t.onboarding.step3.serviceNamePlaceholder}
+                                                 placeholder={onboarding.step3.serviceNamePlaceholder}
                                                 value={service.name}
                                                 onChange={(e) =>
                                                     updateService(
@@ -909,7 +995,7 @@ export default function OnboardingPage() {
                                         <div className="w-full sm:flex-1 flex gap-3">
                                             <div className="flex-1">
                                                 <label className="block sm:hidden text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">
-                                                     {t.onboarding.step3.price}
+                                                     {onboarding.step3.price}
                                                  </label>
                                                 <div className="relative">
                                                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 font-medium">
@@ -917,7 +1003,7 @@ export default function OnboardingPage() {
                                                     </span>
                                                     <input
                                                         type="number"
-                                                         placeholder={t.onboarding.step3.pricePlaceholder}
+                                                         placeholder={onboarding.step3.pricePlaceholder}
                                                         value={service.price}
                                                         onChange={(e) =>
                                                             updateService(
@@ -932,7 +1018,7 @@ export default function OnboardingPage() {
                                             </div>
                                             <div className="flex-1">
                                                 <label className="block sm:hidden text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">
-                                                     {t.onboarding.step3.duration}
+                                                     {onboarding.step3.duration}
                                                  </label>
                                                 <select
                                                     value={service.duration}
@@ -988,11 +1074,11 @@ export default function OnboardingPage() {
                                         className="flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 py-2 px-1 transition-colors"
                                     >
                                         <PlusIcon className="w-4 h-4" />
-                                        {t.onboarding.step3.addAnother}
+                                        {onboarding.step3.addAnother}
                                     </button>
                                 ) : (
                                     <p className="text-xs font-medium text-amber-600 dark:text-amber-400 py-2 px-1">
-                                        {t.onboarding.step3.maxReached}
+                                        {onboarding.step3.maxReached}
                                     </p>
                                 )}
                             </div>
@@ -1007,10 +1093,10 @@ export default function OnboardingPage() {
                                     <CheckIcon className="w-8 h-8" />
                                 </div>
                                 <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-50 mb-2">
-                                    {t.onboarding.step4.title}
+                                    {onboarding.step4.title}
                                 </h2>
                                 <p className="text-slate-500 dark:text-slate-400">
-                                    {t.onboarding.step4.subtitle}
+                                    {onboarding.step4.subtitle}
                                 </p>
                             </div>
 
@@ -1019,12 +1105,12 @@ export default function OnboardingPage() {
                                     <div className="flex items-center gap-4">
                                         {shopForm.logo && (
                                             <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-lg shrink-0 uppercase">
-                                                {shopForm.name.charAt(0) || t.onboarding.step4.fallbackInitial}
+                                                {shopForm.name.charAt(0) || onboarding.step4.fallbackInitial}
                                             </div>
                                         )}
                                         <div>
                                             <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                                {t.onboarding.step4.shopName}
+                                                {onboarding.step4.shopName}
                                             </p>
                                             <p className="text-lg font-bold text-slate-900 dark:text-slate-50">
                                                 {shopForm.name}
@@ -1033,7 +1119,7 @@ export default function OnboardingPage() {
                                     </div>
                                     <div className="text-right">
                                         <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                            {t.onboarding.step4.bookingUrl}
+                                            {onboarding.step4.bookingUrl}
                                         </p>
                                         <p className="text-sm font-medium text-blue-600 dark:text-blue-400">
                                             grid.com/{shopForm.slug}
@@ -1046,7 +1132,7 @@ export default function OnboardingPage() {
                                         {shopForm.address && (
                                             <p>
                                                 <span className="font-semibold text-slate-700 dark:text-slate-200">
-                                                    {t.onboarding.step4.location}
+                                                    {onboarding.step4.location}
                                                 </span>{" "}
                                                 {shopForm.address}
                                             </p>
@@ -1054,7 +1140,7 @@ export default function OnboardingPage() {
                                         {shopForm.phone && (
                                             <p>
                                                 <span className="font-semibold text-slate-700 dark:text-slate-200">
-                                                    {t.onboarding.step4.contact}
+                                                    {onboarding.step4.contact}
                                                 </span>{" "}
                                                 {shopForm.phone}
                                             </p>
@@ -1065,7 +1151,7 @@ export default function OnboardingPage() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="bg-white dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
                                         <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-                                            {t.onboarding.step4.teamSize}
+                                            {onboarding.step4.teamSize}
                                         </p>
                                         <p className="text-2xl font-black text-slate-900 dark:text-slate-50">
                                             {
@@ -1073,12 +1159,12 @@ export default function OnboardingPage() {
                                                     b.name.trim(),
                                                 ).length
                                             }{" "}
-                                            {t.onboarding.step4.barbers}
+                                            {onboarding.step4.barbers}
                                         </p>
                                     </div>
                                     <div className="bg-white dark:bg-slate-900/60 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
                                         <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-                                            {t.onboarding.step4.services}
+                                            {onboarding.step4.services}
                                         </p>
                                         <p className="text-2xl font-black text-slate-900 dark:text-slate-50">
                                             {
@@ -1086,7 +1172,7 @@ export default function OnboardingPage() {
                                                     s.name.trim(),
                                                 ).length
                                             }{" "}
-                                            {t.onboarding.step4.active}
+                                            {onboarding.step4.active}
                                         </p>
                                     </div>
                                 </div>
@@ -1101,7 +1187,7 @@ export default function OnboardingPage() {
                                 onClick={handleBack}
                                 className="px-6 py-3 rounded-xl font-bold text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all"
                             >
-                                {t.onboarding.nav.back}
+                                {onboarding.nav.back}
                             </button>
                         ) : (
                             <div />
@@ -1117,7 +1203,7 @@ export default function OnboardingPage() {
                                         : "bg-slate-100 text-slate-400 shadow-none cursor-not-allowed"
                                 }`}
                             >
-                                {t.onboarding.nav.continue}
+                                {onboarding.nav.continue}
                             </button>
                         ) : (
                             <button
@@ -1126,8 +1212,8 @@ export default function OnboardingPage() {
                                 className="px-8 py-3 rounded-xl font-bold text-sm bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
                             >
                                 {isLaunching
-                                    ? t.onboarding.nav.launching
-                                    : t.onboarding.nav.launch}
+                                    ? onboarding.nav.launching
+                                    : onboarding.nav.launch}
                             </button>
                         )}
                     </div>
