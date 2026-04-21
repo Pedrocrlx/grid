@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { calculatePasswordStrength, type PasswordStrength } from "@/lib/utils/passwordStrength";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface PasswordStrengthIndicatorProps {
   password: string;
@@ -42,9 +43,24 @@ export function PasswordStrengthIndicator({
   showLabel = true,
   className = "",
 }: PasswordStrengthIndicatorProps) {
+  const { t } = useI18n();
+
   const strength: PasswordStrength = useMemo(() => {
-    return calculatePasswordStrength(password);
-  }, [password]);
+    return calculatePasswordStrength(password, {
+      requirementAtLeast8: t.auth.password.requirementAtLeast8,
+      requirementUppercase: t.auth.password.requirementUppercase,
+      requirementLowercase: t.auth.password.requirementLowercase,
+      requirementNumber: t.auth.password.requirementNumber,
+      requirementSpecial: t.auth.password.requirementSpecial,
+      feedbackVeryWeak: t.auth.password.feedbackVeryWeak,
+      feedbackWeak: t.auth.password.feedbackWeak,
+      feedbackFair: t.auth.password.feedbackFair,
+      feedbackGood: t.auth.password.feedbackGood,
+      feedbackStrong: t.auth.password.feedbackStrong,
+      feedbackMissing: t.auth.password.feedbackMissing,
+      errorRequired: t.auth.password.errorRequired,
+    });
+  }, [password, t.auth.password]);
 
   // Don't show indicator if password is empty
   if (!password) {
@@ -77,7 +93,7 @@ export function PasswordStrengthIndicator({
             {strength.feedback}
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            {password.length}/{128} chars
+            {password.length}/{128} {t.auth.password.charsSuffix}
           </p>
         </div>
       )}

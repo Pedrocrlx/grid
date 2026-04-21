@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { Check, X } from "lucide-react";
 import { getPasswordRequirements, type PasswordRequirement } from "@/lib/utils/passwordStrength";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface PasswordRequirementsProps {
   password: string;
@@ -10,9 +11,17 @@ interface PasswordRequirementsProps {
 }
 
 export function PasswordRequirements({ password, className = "" }: PasswordRequirementsProps) {
+  const { t } = useI18n();
+
   const requirements: PasswordRequirement[] = useMemo(() => {
-    return getPasswordRequirements(password);
-  }, [password]);
+    return getPasswordRequirements(password, {
+      requirementAtLeast8: t.auth.password.requirementAtLeast8,
+      requirementUppercase: t.auth.password.requirementUppercase,
+      requirementLowercase: t.auth.password.requirementLowercase,
+      requirementNumber: t.auth.password.requirementNumber,
+      requirementSpecial: t.auth.password.requirementSpecial,
+    });
+  }, [password, t.auth.password]);
 
   // Don't show requirements if password is empty
   if (!password) {
@@ -22,12 +31,12 @@ export function PasswordRequirements({ password, className = "" }: PasswordRequi
   return (
     <div className={`space-y-2 ${className}`}>
       <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
-        Password requirements:
+        {t.auth.password.requirementsTitle}
       </p>
       <ul className="space-y-1.5">
         {requirements.map((requirement, index) => {
-          const isSpecialChar = requirement.label.includes("special character");
-          const isRequired = !isSpecialChar;
+          const isOptionalRule = index === requirements.length - 1;
+          const isRequired = !isOptionalRule;
 
           return (
             <li key={index} className="flex items-center gap-2 text-xs">
@@ -57,7 +66,7 @@ export function PasswordRequirements({ password, className = "" }: PasswordRequi
                 {requirement.label}
                 {!isRequired && (
                   <span className="text-slate-400 dark:text-slate-600 ml-1 italic">
-                    (optional)
+                    ({t.auth.password.optional})
                   </span>
                 )}
               </span>

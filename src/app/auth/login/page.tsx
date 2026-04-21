@@ -8,9 +8,11 @@ import { userService } from "@/services/userService";
 import { toast } from "sonner";
 import GridIcon from "@/components/landing/GridIcon";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useI18n();
   const { signIn, signInWithGoogle, isLoading } = useAuth();
   const [googleLoading, setGoogleLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -39,13 +41,13 @@ export default function LoginPage() {
     const newErrors: Record<string, string> = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t.auth.login.errors.emailRequired;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = t.auth.login.errors.emailInvalid;
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = t.auth.login.errors.passwordRequired;
     }
 
     setErrors(newErrors);
@@ -65,12 +67,12 @@ export default function LoginPage() {
     });
 
     if (error) {
-      toast.error(error.message || "Failed to sign in");
+      toast.error(error.message || t.auth.login.toastFailed);
       return;
     }
 
     if (user) {
-      toast.success("Welcome back!");
+      toast.success(t.auth.login.toastSuccess);
       // Check if user already completed onboarding before redirecting
       const { hasShop } = await userService.getShopStatus();
       router.push(hasShop ? "/dashboard" : "/onboarding");
@@ -81,7 +83,7 @@ export default function LoginPage() {
     setGoogleLoading(true);
     const { error } = await signInWithGoogle();
     if (error) {
-      toast.error("Failed to sign in with Google");
+      toast.error(t.auth.login.toastGoogleFailed);
       setGoogleLoading(false);
     }
     // No need to redirect - Supabase will redirect to /auth/callback
@@ -98,10 +100,10 @@ export default function LoginPage() {
               <span className="text-xl font-extrabold text-slate-900 dark:text-slate-50">Grid</span>
             </div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
-              Welcome Back
+              {t.auth.login.title}
             </h1>
             <p className="text-slate-600 dark:text-slate-400 text-sm">
-              Sign in to manage your barbershop bookings
+              {t.auth.login.subtitle}
             </p>
           </div>
 
@@ -109,16 +111,16 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
-                Email Address
-              </label>
+                <label htmlFor="email" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
+                  {t.auth.login.emailLabel}
+                </label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="joao@example.com"
+                placeholder={t.auth.login.emailPlaceholder}
                 className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder:text-slate-500 dark:placeholder:text-slate-400 ${errors.email ? "border-red-500 dark:border-red-600" : "border-slate-200 dark:border-slate-700"
                   }`}
               />
@@ -130,14 +132,14 @@ export default function LoginPage() {
             {/* Password Field */}
             <div>
               <div className="flex justify-between items-center mb-1">
-                <label htmlFor="password" className="block text-sm font-medium text-slate-900 dark:text-slate-200">
-                  Password
-                </label>
+                  <label htmlFor="password" className="block text-sm font-medium text-slate-900 dark:text-slate-200">
+                    {t.auth.login.passwordLabel}
+                  </label>
                 <Link
                   href="/auth/forgot-password"
                   className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
                 >
-                  Forgot?
+                  {t.auth.login.forgot}
                 </Link>
               </div>
               <PasswordInput
@@ -145,7 +147,7 @@ export default function LoginPage() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="••••••••"
+                placeholder={t.auth.login.passwordPlaceholder}
                 error={!!errors.password}
               />
               {errors.password && (
@@ -159,14 +161,14 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full cursor-pointer py-2.5 bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-500 text-white rounded-lg font-semibold transition-all disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20 dark:shadow-blue-600/10"
             >
-              {isLoading ? "Signing In..." : "Sign In"}
+              {isLoading ? t.auth.login.submitLoading : t.auth.login.submit}
             </button>
           </form>
 
           {/* Divider */}
           <div className="flex items-center my-5">
             <div className="flex-1 border-t border-slate-200 dark:border-slate-700"></div>
-            <span className="px-3 text-sm text-slate-400 dark:text-slate-500">or</span>
+            <span className="px-3 text-sm text-slate-400 dark:text-slate-500">{t.auth.login.dividerOr}</span>
             <div className="flex-1 border-t border-slate-200 dark:border-slate-700"></div>
           </div>
 
@@ -190,22 +192,22 @@ export default function LoginPage() {
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
               </svg>
             )}
-            {googleLoading ? "Redirecting..." : "Continue with Google"}
+            {googleLoading ? t.auth.login.googleRedirecting : t.auth.login.googleContinue}
           </button>
 
           {/* Sign Up Link */}
           <p className="text-center mt-6 text-slate-600 dark:text-slate-400 text-sm">
-            Don't have an account?{" "}
+            {t.auth.login.noAccount}{" "}
             <Link href="/auth/signup" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
-              Create One
+              {t.auth.login.createOne}
             </Link>
           </p>
 
           {/* Back to home */}
           <div className="text-center mt-4">
-            <Link href="/" className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-sm font-medium">
-              ← Back to Home
-            </Link>
+              <Link href="/" className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-sm font-medium">
+              {t.auth.login.backHome}
+              </Link>
           </div>
         </div>
       </div>

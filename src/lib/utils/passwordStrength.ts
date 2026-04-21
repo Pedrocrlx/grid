@@ -17,6 +17,26 @@ export interface PasswordStrength {
   feedback: string;
 }
 
+export interface PasswordI18n {
+  requirementAtLeast8?: string;
+  requirementUppercase?: string;
+  requirementLowercase?: string;
+  requirementNumber?: string;
+  requirementSpecial?: string;
+  feedbackVeryWeak?: string;
+  feedbackWeak?: string;
+  feedbackFair?: string;
+  feedbackGood?: string;
+  feedbackStrong?: string;
+  feedbackMissing?: string;
+  errorRequired?: string;
+  errorMin?: string;
+  errorMax?: string;
+  errorUppercase?: string;
+  errorLowercase?: string;
+  errorNumber?: string;
+}
+
 // Password validation rules (Moderate Security)
 export const PASSWORD_RULES = {
   minLength: 8,
@@ -28,30 +48,33 @@ export const PASSWORD_RULES = {
 };
 
 // Define password requirements
-export const getPasswordRequirements = (password: string): PasswordRequirement[] => {
+export const getPasswordRequirements = (
+  password: string,
+  i18n?: PasswordI18n,
+): PasswordRequirement[] => {
   return [
     {
-      label: "At least 8 characters",
+      label: i18n?.requirementAtLeast8 ?? "At least 8 characters",
       regex: /.{8,}/,
       met: password.length >= 8,
     },
     {
-      label: "One uppercase letter",
+      label: i18n?.requirementUppercase ?? "One uppercase letter",
       regex: /[A-Z]/,
       met: /[A-Z]/.test(password),
     },
     {
-      label: "One lowercase letter",
+      label: i18n?.requirementLowercase ?? "One lowercase letter",
       regex: /[a-z]/,
       met: /[a-z]/.test(password),
     },
     {
-      label: "One number",
+      label: i18n?.requirementNumber ?? "One number",
       regex: /[0-9]/,
       met: /[0-9]/.test(password),
     },
     {
-      label: "One special character (recommended)",
+      label: i18n?.requirementSpecial ?? "One special character (recommended)",
       regex: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,
       met: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
     },
@@ -63,18 +86,21 @@ export const getPasswordRequirements = (password: string): PasswordRequirement[]
  * @param password - The password to evaluate
  * @returns PasswordStrength object with score, strength label, and requirements
  */
-export const calculatePasswordStrength = (password: string): PasswordStrength => {
+export const calculatePasswordStrength = (
+  password: string,
+  i18n?: PasswordI18n,
+): PasswordStrength => {
   if (!password) {
     return {
       score: 0,
       strength: "very-weak",
-      requirements: getPasswordRequirements(password),
+      requirements: getPasswordRequirements(password, i18n),
       isValid: false,
-      feedback: "Password is required",
+      feedback: i18n?.errorRequired ?? "Password is required",
     };
   }
 
-  const requirements = getPasswordRequirements(password);
+  const requirements = getPasswordRequirements(password, i18n);
   const metRequirements = requirements.filter((req) => req.met).length;
 
   // Calculate base score from requirements
@@ -144,24 +170,24 @@ export const calculatePasswordStrength = (password: string): PasswordStrength =>
 
   if (score === 0) {
     strength = "very-weak";
-    feedback = "Very weak password";
+    feedback = i18n?.feedbackVeryWeak ?? "Very weak password";
   } else if (score === 1) {
     strength = "weak";
-    feedback = "Weak password";
+    feedback = i18n?.feedbackWeak ?? "Weak password";
   } else if (score === 2) {
     strength = "fair";
-    feedback = "Fair password";
+    feedback = i18n?.feedbackFair ?? "Fair password";
   } else if (score === 3) {
     strength = "good";
-    feedback = "Good password";
+    feedback = i18n?.feedbackGood ?? "Good password";
   } else {
     strength = "strong";
-    feedback = "Strong password!";
+    feedback = i18n?.feedbackStrong ?? "Strong password!";
   }
 
   // Override feedback if not valid
   if (!isValid) {
-    feedback = `Missing: ${failedRequired.join(", ")}`;
+    feedback = `${i18n?.feedbackMissing ?? "Missing:"} ${failedRequired.join(", ")}`;
   }
 
   return {
@@ -178,29 +204,29 @@ export const calculatePasswordStrength = (password: string): PasswordStrength =>
  * @param password - The password to validate
  * @returns Error message if invalid, null if valid
  */
-export const validatePassword = (password: string): string | null => {
+export const validatePassword = (password: string, i18n?: PasswordI18n): string | null => {
   if (!password) {
-    return "Password is required";
+    return i18n?.errorRequired ?? "Password is required";
   }
 
   if (password.length < PASSWORD_RULES.minLength) {
-    return `Password must be at least ${PASSWORD_RULES.minLength} characters`;
+    return i18n?.errorMin ?? `Password must be at least ${PASSWORD_RULES.minLength} characters`;
   }
 
   if (password.length > PASSWORD_RULES.maxLength) {
-    return `Password must be less than ${PASSWORD_RULES.maxLength} characters`;
+    return i18n?.errorMax ?? `Password must be less than ${PASSWORD_RULES.maxLength} characters`;
   }
 
   if (PASSWORD_RULES.requireUppercase && !/[A-Z]/.test(password)) {
-    return "Password must contain at least one uppercase letter";
+    return i18n?.errorUppercase ?? "Password must contain at least one uppercase letter";
   }
 
   if (PASSWORD_RULES.requireLowercase && !/[a-z]/.test(password)) {
-    return "Password must contain at least one lowercase letter";
+    return i18n?.errorLowercase ?? "Password must contain at least one lowercase letter";
   }
 
   if (PASSWORD_RULES.requireNumber && !/[0-9]/.test(password)) {
-    return "Password must contain at least one number";
+    return i18n?.errorNumber ?? "Password must contain at least one number";
   }
 
   return null; // Valid

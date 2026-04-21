@@ -10,9 +10,11 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { PasswordStrengthIndicator } from "@/components/ui/password-strength-indicator";
 import { PasswordRequirements } from "@/components/ui/password-requirements";
 import { validatePassword } from "@/lib/utils/passwordStrength";
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function SignUpPage() {
   const router = useRouter();
+  const { t } = useI18n();
   const { signUp, signInWithGoogle, isLoading } = useAuth();
   const [googleLoading, setGoogleLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,7 +39,14 @@ export default function SignUpPage() {
       const nextErrors = { ...prev };
 
       if (name === "password") {
-        const passwordError = validatePassword(value);
+        const passwordError = validatePassword(value, {
+          errorRequired: t.auth.password.errorRequired,
+          errorMin: t.auth.password.errorMin,
+          errorMax: t.auth.password.errorMax,
+          errorUppercase: t.auth.password.errorUppercase,
+          errorLowercase: t.auth.password.errorLowercase,
+          errorNumber: t.auth.password.errorNumber,
+        });
 
         if (passwordError) {
           nextErrors.password = passwordError;
@@ -49,7 +58,7 @@ export default function SignUpPage() {
           nextFormData.confirmPassword &&
           nextFormData.confirmPassword !== value
         ) {
-          nextErrors.confirmPassword = "Passwords do not match";
+          nextErrors.confirmPassword = t.auth.signup.errors.passwordMismatch;
         } else {
           delete nextErrors.confirmPassword;
         }
@@ -59,7 +68,7 @@ export default function SignUpPage() {
 
       if (name === "confirmPassword") {
         if (value !== nextFormData.password) {
-          nextErrors.confirmPassword = "Passwords do not match";
+          nextErrors.confirmPassword = t.auth.signup.errors.passwordMismatch;
         } else {
           delete nextErrors.confirmPassword;
         }
@@ -79,23 +88,30 @@ export default function SignUpPage() {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = t.auth.signup.errors.nameRequired;
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t.auth.signup.errors.emailRequired;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = t.auth.signup.errors.emailInvalid;
     }
 
     // Validate password with new enhanced rules
-    const passwordError = validatePassword(formData.password);
+    const passwordError = validatePassword(formData.password, {
+      errorRequired: t.auth.password.errorRequired,
+      errorMin: t.auth.password.errorMin,
+      errorMax: t.auth.password.errorMax,
+      errorUppercase: t.auth.password.errorUppercase,
+      errorLowercase: t.auth.password.errorLowercase,
+      errorNumber: t.auth.password.errorNumber,
+    });
     if (passwordError) {
       newErrors.password = passwordError;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t.auth.signup.errors.passwordMismatch;
     }
 
     setErrors(newErrors);
@@ -118,12 +134,12 @@ export default function SignUpPage() {
     });
 
     if (error) {
-      toast.error(error.message || "Failed to create account");
+      toast.error(error.message || t.auth.signup.toastFailed);
       return;
     }
 
     if (user) {
-      toast.success("Account created! Please check your email to verify.");
+      toast.success(t.auth.signup.toastSuccess);
       // Redirect to verification page
       router.push("/auth/verify-email");
     }
@@ -133,7 +149,7 @@ export default function SignUpPage() {
     setGoogleLoading(true);
     const { error } = await signInWithGoogle();
     if (error) {
-      toast.error("Failed to sign up with Google");
+      toast.error(t.auth.signup.toastGoogleFailed);
       setGoogleLoading(false);
     }
     // No need to redirect - Supabase will redirect to /auth/callback
@@ -150,10 +166,10 @@ export default function SignUpPage() {
               <span className="text-xl font-extrabold text-slate-900 dark:text-slate-50">Grid</span>
             </div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-2">
-              Create Your Account
+              {t.auth.signup.title}
             </h1>
             <p className="text-slate-600 dark:text-slate-400 text-sm">
-              Join thousands of barbershops managing bookings with precision
+              {t.auth.signup.subtitle}
             </p>
           </div>
 
@@ -161,16 +177,16 @@ export default function SignUpPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name Field */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
-                Full Name
-              </label>
+                <label htmlFor="name" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
+                  {t.auth.signup.nameLabel}
+                </label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="João Silva"
+                placeholder={t.auth.signup.namePlaceholder}
                 className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder:text-slate-500 dark:placeholder:text-slate-400 ${errors.name ? "border-red-500 dark:border-red-600" : "border-slate-200 dark:border-slate-700"
                   }`}
               />
@@ -181,16 +197,16 @@ export default function SignUpPage() {
 
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
-                Email Address
-              </label>
+                <label htmlFor="email" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
+                  {t.auth.signup.emailLabel}
+                </label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="joao@example.com"
+                placeholder={t.auth.signup.emailPlaceholder}
                 className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 placeholder:text-slate-500 dark:placeholder:text-slate-400 ${errors.email ? "border-red-500 dark:border-red-600" : "border-slate-200 dark:border-slate-700"
                   }`}
               />
@@ -201,15 +217,15 @@ export default function SignUpPage() {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
-                Password
-              </label>
+                <label htmlFor="password" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
+                  {t.auth.signup.passwordLabel}
+                </label>
               <PasswordInput
                 id="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="••••••••"
+                placeholder={t.auth.signup.passwordPlaceholder}
                 error={!!errors.password}
               />
               
@@ -230,15 +246,15 @@ export default function SignUpPage() {
 
             {/* Confirm Password Field */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
-                Confirm Password
-              </label>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-900 dark:text-slate-200 mb-1">
+                  {t.auth.signup.confirmPasswordLabel}
+                </label>
               <PasswordInput
                 id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                placeholder="••••••••"
+                placeholder={t.auth.signup.confirmPasswordPlaceholder}
                 error={!!errors.confirmPassword}
               />
               {errors.confirmPassword && (
@@ -252,14 +268,14 @@ export default function SignUpPage() {
               disabled={isLoading}
               className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-500 text-white rounded-lg font-semibold transition-all disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20 dark:shadow-blue-600/10"
             >
-              {isLoading ? "Creating Account..." : "Create Account"}
+              {isLoading ? t.auth.signup.submitLoading : t.auth.signup.submit}
             </button>
           </form>
 
           {/* Divider */}
           <div className="flex items-center my-5">
             <div className="flex-1 border-t border-slate-200 dark:border-slate-700"></div>
-            <span className="px-3 text-sm text-slate-400 dark:text-slate-500">or</span>
+            <span className="px-3 text-sm text-slate-400 dark:text-slate-500">{t.auth.signup.dividerOr}</span>
             <div className="flex-1 border-t border-slate-200 dark:border-slate-700"></div>
           </div>
 
@@ -283,26 +299,26 @@ export default function SignUpPage() {
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
               </svg>
             )}
-            {googleLoading ? "Redirecting..." : "Continue with Google"}
+            {googleLoading ? t.auth.signup.googleRedirecting : t.auth.signup.googleContinue}
           </button>
 
           {/* Terms Agreement */}
           <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-4">
-            By creating an account, you agree to our{" "}
+            {t.auth.signup.termsPrefix}{" "}
             <Link href="/terms" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
-              Terms of Service
+              {t.auth.signup.terms}
             </Link>{" "}
-            and{" "}
+            {t.auth.signup.and}{" "}
             <Link href="/privacy" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
-              Privacy Policy
+              {t.auth.signup.privacy}
             </Link>
           </p>
 
           {/* Sign In Link */}
           <p className="text-center mt-6 text-slate-600 dark:text-slate-400 text-sm">
-            Already have an account?{" "}
+            {t.auth.signup.alreadyHaveAccount}{" "}
             <Link href="/auth/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
-              Sign In
+              {t.auth.signup.signIn}
             </Link>
           </p>
         </div>
@@ -310,7 +326,7 @@ export default function SignUpPage() {
         {/* Back to home */}
         <div className="text-center mt-4">
           <Link href="/" className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-sm font-medium">
-            ← Back to Home
+            {t.auth.signup.backHome}
           </Link>
         </div>
       </div>
